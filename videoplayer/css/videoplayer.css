@@ -1,0 +1,17 @@
+/* Change all text and icon colors in the player. */
+.vjs-matrix.video-js {
+    color: #ffffff;
+}
+
+/* Change the border of the big play button. */
+.vjs-matrix .vjs-big-play-button {
+    border-color: #ffffff;
+    margin: auto; position: absolute; bottom: 0px; left: 0px; right: 0px; top: 0px;
+}
+
+/* Change the color of various "bars". */
+.vjs-matrix .vjs-volume-level,
+.vjs-matrix .vjs-play-progress,
+.vjs-matrix .vjs-slider-bar {
+    background: #ffffff;
+}
