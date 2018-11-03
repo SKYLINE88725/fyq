@@ -27,9 +27,9 @@ include("include/top_navigate.php");
         <p><img src="<?php if ($row_member['mb_ico']) {echo $row_member['mb_ico'];} else {echo "img/test/ico.png";}?>" alt=""></p>
         <p><?php echo $row_member['mb_nick'];?></p>
         <p>
-        	<img src="img/member_level.png" alt="<?php echo member_level($row_member['mb_level'])?>">
+        	<img src="img/member_level.png" alt="<?php echo member_level($row_member)?>">
         	<?php 
-				echo member_level($row_member['mb_level']);
+				echo member_level($row_member);
 				if ($row_member['mb_level'] !== 3 || $row_member['mb_level'] !== 4) {
 					if ($row_member['mb_distribution'] == "1980.00") {
 						echo " & 经纪人";

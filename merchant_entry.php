@@ -13,9 +13,9 @@ $top_navigate_index = '<a href="index.php" target="_self"><img src="/img/return_
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 	<title><?php echo $head_title;?></title>
-	<link rel="apple-touch-icon" href="http://fyq.shengtai114.com/ico/touch-icon-iphone.png"/>
-	<link rel="apple-touch-icon" sizes="72x72" href="http://fyq.shengtai114.com/ico/touch-icon-ipad.png"/>
-	<link rel="apple-touch-icon" sizes="114x114" href="http://fyq.shengtai114.com/ico/touch-icon-iphone4.png"/>
+	<link rel="apple-touch-icon" href="../ico/touch-icon-iphone.png"/>
+	<link rel="apple-touch-icon" sizes="72x72" href="../ico/touch-icon-ipad.png"/>
+	<link rel="apple-touch-icon" sizes="114x114" href="../ico/touch-icon-iphone4.png"/>
 	<link rel="stylesheet" type="text/css" href="../css/style.css?20180414"/>
 	<link rel="stylesheet" type="text/css" href="../css/swiper.min.css">
 	<link rel="stylesheet" type="text/css" href="../css/jquery.skidder.css">
@@ -38,19 +38,19 @@ $top_navigate_index = '<a href="index.php" target="_self"><img src="/img/return_
     <script type="text/javascript" src="js/camera.js"></script>
     <script type="text/javascript" src="js/barcode.js" ></script>
     <script type="text/javascript" src="js/jquery-1.10.2.js" ></script>
-	<script type="text/javascript" src="http://fyq.shengtai114.com/js/jquery-3.2.1.min.js"></script>
-	<script type="text/javascript" src="http://fyq.shengtai114.com/js/iscroll.js"></script>
-	<script type="text/javascript" src="http://fyq.shengtai114.com/js/clipboard.min.js"></script>
-	<script type="text/javascript" src="http://fyq.shengtai114.com/js/smscode.js"></script>
-	<script type="text/javascript" src="http://fyq.shengtai114.com/fuyuanquan/js/distpicker.data.js"></script>
-	<script type="text/javascript" src="http://fyq.shengtai114.com/fuyuanquan/js/distpicker.js"></script>
-	<script type="text/javascript" src="http://fyq.shengtai114.com/js/YdbOnline.js"></script>
-	<script type="text/javascript" src="http://fyq.shengtai114.com/js/swiper.min.js"></script>
-    <script type="text/javascript" src="http://fyq.shengtai114.com/js/jquery.cookie.js"></script>
-    <script type="text/javascript" src="http://fyq.shengtai114.com/js/jquery.qrcode.min.js"></script>
-    <script type="text/javascript" src="http://fyq.shengtai114.com/js/gpsmite.js"></script>
+	<script type="text/javascript" src="../js/jquery-3.2.1.min.js"></script>
+	<script type="text/javascript" src="../js/iscroll.js"></script>
+	<script type="text/javascript" src="../js/clipboard.min.js"></script>
+	<script type="text/javascript" src="../js/smscode.js"></script>
+	<script type="text/javascript" src="../fuyuanquan/js/distpicker.data.js"></script>
+	<script type="text/javascript" src="../fuyuanquan/js/distpicker.js"></script>
+	<script type="text/javascript" src="../js/YdbOnline.js"></script>
+	<script type="text/javascript" src="../js/swiper.min.js"></script>
+    <script type="text/javascript" src="../js/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../js/jquery.qrcode.min.js"></script>
+    <script type="text/javascript" src="../js/gpsmite.js"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=I6KGwyXcKZsPeRw96st6TTcPkpMquvcG"></script>
-    <script type="text/javascript" src="http://fyq.shengtai114.com/js/jquery_fyq.js?<?php echo time();?>"></script>
+    <script type="text/javascript" src="../js/jquery_fyq.js?<?php echo time();?>"></script>
     <script type="text/javascript" src="js/jquery.liMarquee.js"></script>
     <script type="text/javascript">
         var YDB = new YDBOBJ();
@@ -201,7 +201,7 @@ if ($me_state == '1')
 		<ul class="mui-input-group">
 			<li class="mui-input-row">
 				<label>专家名称</label>
-			  	<input class="mui-input-clear" type="text" name="merchant_shop" value="<?php echo $row_merchant['me_shop']?>" placeholder="请输入商户名称">
+			  	<input class="mui-input-clear" type="text" name="merchant_shop" value="<?php echo $row_merchant['me_shop']?>" placeholder="请输入专家名称">
 			</li>
             <li class="mui-input-row">
 				<label>法人姓名</label>
@@ -226,7 +226,7 @@ if ($me_state == '1')
 			</li>
             <li class="mui-input-row">
 				<label>专家地址</label>
-			  	<input type="text" name="merchant_address" value="<?php echo $row_merchant['me_address']?>" placeholder="请输入商户地址">
+			  	<input type="text" name="merchant_address" value="<?php echo $row_merchant['me_address']?>" placeholder="请输入专家地址">
 			</li>
 			<li class="mui-input-row" style="height: 170px;">
                 <?php 

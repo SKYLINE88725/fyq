@@ -1794,7 +1794,8 @@ img {}
 }
 .tc_detailed_foot li:nth-child(1) {
 	width: 50%;
-	background-color: #313131;
+	background-color: #00;
+	margin-left: 100px;
 }
 .tc_detailed_foot li:nth-child(1) span {
     float: left;
@@ -5029,9 +5030,10 @@ img {}
 div.horizontal-list{
 	background-color: #2c38ab;
 	vertical-align: middle;
-	height: 52px;
+	height: 40px;
 	background-image: url(../img/top-bg.png);
 	background-repeat: no-repeat;
+	margin-right: 40px;
 }
 div.fixed{
 	margin-top: -146px;
@@ -5045,7 +5047,7 @@ ul#horizontal-list {
 	overflow-x: auto;
 	overflow-y: hidden;
 	white-space: nowrap;
-	padding: 15px 15px;
+	padding: 10px;
 }
 ul#horizontal-list.fixed {
     z-index: 6;
@@ -5053,8 +5055,7 @@ ul#horizontal-list.fixed {
 ul#horizontal-list li {
 	display: inline;
 	overflow: hidden;
-	padding: 10px 15px;
-	height: 24px;
+	padding: 5px 15px;
 }
 ul#horizontal-list li a{
 	font-size: 14px;

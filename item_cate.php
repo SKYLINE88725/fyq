@@ -66,13 +66,13 @@ include( "include/top_navigate.php" );
                 while( $row = mysqli_fetch_assoc($result) ){        
          ?>
 
-            <div style="width: 33%; padding: 5px; float: left; ">
+            <div style="width: 50%; padding: 5px; float: left; ">
                 <div style="width: 100%;position: relative;">
                     
-                    <li value="<?php echo $row_cate['ic_cid'];?>" id="sort_menu_<?php echo $row_cate['ic_cid'];?>"><a><?php echo $row_cate['ic_name'];?></a></li>
-                   
+                    <li value="<?php echo $row['ic_cid'];?>" id="sort_menu_<?php echo $row['ic_cid'];?>"><a><?php echo $row['ic_name'];?></a></li>
+                   <!-- <?php echo $row['ic_cid']?> -->
                 </div>
-                <div style="color: #313131"><?php echo $row['ic_name'];?></div>
+                <!-- <div style="color: #313131"><?php echo $row['ic_name'];?></div> -->
             </div>
         <?php 
                 }

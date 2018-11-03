@@ -18,4 +18,10 @@ if($top_navigate_index != "")
 		<?php echo $top_navigate_return;?>
 	</span> 
 	<span><?php echo $top_title;?></span> 
+    <?php echo $top_url;?>
+    <?php 
+        if(isset($top_button)){
+            echo $top_button;
+        }
+    ?>
 </div>

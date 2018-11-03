@@ -63,19 +63,12 @@ function follow_id(fid) {
 	$return_url = "..";
 	include("include/top_navigate.php");
 ?>
-<div class="businesses_blog_detailed" style="background-image: url('<?php echo $row['cl_bg'];?>'); background-size: cover;margin-top:50px ">
+<div style="margin-top:50px ">
   <ul>
-    <li><img src="<?php echo $row['cl_logo'];?>" style="width: 80%; height: 60px"></li>
-    <li>
-      <p><?php echo $row['cl_name'];?></p>
-      <p><?php echo $row['cl_province'];?> <?php echo $row['cl_city'];?> <?php echo $row['cl_area'];?></p>
-    </li>
-    <!--<li>
-      <p><img src="img/off_ok.png" alt="关注">关注</p>
-      <p>365 人</p>
-    </li>-->
+    <li><img src="<?php echo $row['cl_logo'];?>" style="width: 50%;margin-left: 20%;"></li>
+    
   </ul>
-	<!--<div id="businesses_blog_edit">店铺编辑</div>-->
+	
 </div>
 <div class="businesses_blog_list">
   <ul>
@@ -106,15 +99,7 @@ function follow_id(fid) {
       <p class="businesses_blog_list_title"><?php echo $row_list['tl_name'];?></p>
       <p class="businesses_blog_list_cate"><span><?php echo $row_cate['ic_name'];?></span><span><img id="follow_<?php echo $row_list['tl_id'];?>" onClick="follow_id('<?php echo $row_list['tl_id'];?>')" src="<?php echo $follow_img;?>" alt=""></span></p>
 		<p class="businesses_blog_list_price">
-			<?php 
-			if ($row_list['tl_point_type'] == "0") 
-			{
-			?>
-				<!-- echo "￥".$row_list['tl_price']."<i>￥".$row_list['tl_original']."</i>"; -->
-				幸福价￥<?php echo $row_list['tl_price'];?><i style="margin-left: 5px; text-decoration: line-through; color: #959595; font-size: 0.8em;">原价￥<?php echo $row_list['tl_original'];?></i>
-			<?php
-			}
-			?>
+			
 			<?php 
 				if ($row_list['tl_point_type'] == "1") {
 					echo '<img src="img/point_ico.png" alt="积分图标" style="width:10%">'.$row_list['tl_point_commodity'];

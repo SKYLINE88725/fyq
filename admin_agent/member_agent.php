@@ -95,7 +95,7 @@ if ($result_agent = mysqli_query($mysqli, $query_agent))
 													<?php echo $row['mb_id'];?>
 												</td>
 												<td>
-													<?php echo $row['mb_phone'];?>(<?php echo member_level($row['mb_level']);?>) 
+													<?php echo $row['mb_phone'];?>(<?php echo member_level($row);?>) 
 												</td>
 												<td>
 													<?php echo $row['mb_nick'];?>

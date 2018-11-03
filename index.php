@@ -296,7 +296,6 @@ include( "include/head_.php" );
 </style>
 
 <link href="https://vjs.zencdn.net/7.2.4/video-js.css" rel="stylesheet">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://vjs.zencdn.net/7.2.4/video.js"></script>
 <link href="./videoplayer/css/videoplayer.css" rel="stylesheet">
 
@@ -502,7 +501,7 @@ include( "include/head_.php" );
         <div style="font-size: 11px;line-height: 5px">附近</div>
     </a>
     <!-- <a href="subscriber.php" target="_self" class="foot_center miclick no-link" style="color: #f99c73;"><img src="img/newhot.png"></a> -->
-    <a href="subscriber.php" target="_self" class="foot_ico no-link" style="color: #f99c73; font-weight: bolder;">
+    <a href="huiyuan.php?view=1895&type=join" target="_self" class="foot_ico no-link" style="color: #f99c73; font-weight: bolder;">
         <img src="img/bot-menu-official.png" style="height: 30px">
         <div style="font-size: 11px;line-height: 5px">会员</div>
     </a>
@@ -510,9 +509,9 @@ include( "include/head_.php" );
 		if($member_login) 
 		{
 			if( $me_state ){
-				echo '<a href="/my_commodity.php" target="_self" class="foot_ico no-link"  style="color: #f99c73; font-weight: bolder;">';
+				echo '<a href="/my_subjects.php" target="_self" class="foot_ico no-link"  style="color: #f99c73; font-weight: bolder;">';
 			} else {
-				echo '<a href="my_commodity.php" target="_self" class="foot_ico no-link" style="color: #f99c73; font-weight: bolder;">';
+				echo '<a href="merchant_entry.php" target="_self" class="foot_ico no-link" style="color: #f99c73; font-weight: bolder;">';
 			}
 	?>
             <img src="img/bot-menu-login.png" style="height: 30px">
@@ -521,7 +520,7 @@ include( "include/head_.php" );
 			if( $me_state ){
 				echo "发布信息";
 			} else {
-				echo "发布信息";
+				echo "专家入驻";
 			}
 		?>
             </div>

@@ -25,7 +25,7 @@ include("include/top_navigate.php");
 			<li><img src="<?php echo $member_shar['mb_ico'];?>" alt=""></li>
 			<li>
 				<p style="color:#FFF; font-size:18px;"><?php echo $member_shar['mb_nick'];?></p>
-				<p><span><img src="img/member_level.png" alt=""></span><?php echo member_level($member_shar['mb_level'])?></p>
+				<p><span><img src="img/member_level.png" alt=""></span><?php echo member_level($member_shar)?></p>
                 <p style="color:#FFF; font-size:16px;">拥有股份：<span style="color:#FFF000; font-size:18px;"><?php echo $member_shar['mb_share'];?></span></p>
                 <p style="color:#FFF; font-size:16px;">股份占比：<span style="color:#FFF000; font-size:18px;"><?php echo sprintf("%.2f",($member_shar['mb_share']/60000000) * 100);?>%</span>
 			</li>

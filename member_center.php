@@ -37,9 +37,9 @@ include("include/top_navigate.php");
         <p><img src="<?php if ($row_member['mb_ico']) {echo $row_member['mb_ico'];} else {echo "img/test/ico.png";}?>" alt=""></p>
         <p><?php echo $row_member['mb_nick'];?></p>
         <p>
-        	<img src="img/member_level.png" alt="<?php echo member_level($row_member['mb_level']);?>">
+        	<img src="img/member_level.png" alt="<?php echo member_level($row_member);?>">
         	<?php 
-				echo member_level($row_member['mb_level']);
+				echo member_level($row_member);
 				if ($row_member['mb_level'] !== 3 && $row_member['mb_level'] !== 4) {
 					if ($row_member['mb_distribution'] == "1980.00") {
 						echo " & 经纪人";
@@ -68,7 +68,7 @@ include("include/top_navigate.php");
     </li>
   </ul>
 </div>
-<div class="member_center_cate">
+<!-- <div class="member_center_cate">
   <ul>
     <li>
 		<p><a class="animsition-link" href="my_order.php" target="_self"><img src="img/member_ico1.png" alt="待付款"><span><?php echo $pay_Number;?></span></a></p>
@@ -80,7 +80,7 @@ include("include/top_navigate.php");
      
     </li>
   </ul>
-</div>
+</div> -->
 <div class="member_center_navi">
   <ul>
     <li>
@@ -109,10 +109,14 @@ include("include/top_navigate.php");
   		<p><a class="animsition-link" href="merchant_entry.php" target="_self">专家入驻</a></p>
     </li>
     <li>
+      <p><a class="animsition-link" href="myqrcode.php" target="_self"><img src="img/qrcode_ico.png" alt="我的二维码"></a></p>
+      <p><a class="animsition-link" href="myqrcode.php" target="_self">我的二维码</a></p>
+    </li>
+    <!-- <li>
       <p><a class="animsition-link" href="member_shipping_address.php" target="_self"><img src="img/member_prese.png" alt="收货地址"></a></p>
       <p><a class="animsition-link" href="member_shipping_address.php" target="_self">收货地址</a></p>
-    </li>
-    <?php 
+    </li> -->
+    <!-- <?php 
     if ( get_user_sales_permission( $mysqli, $member_login ) ) {
     ?>
     <li>
@@ -121,7 +125,7 @@ include("include/top_navigate.php");
     </li>
     <?php
     }
-    ?>
+    ?> -->
 	
   </ul>
 	

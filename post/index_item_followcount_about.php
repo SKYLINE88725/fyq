@@ -278,13 +278,13 @@ if ($item_cate == "discount_new") {
                      
 
                      <span style="color: #999999;">
-                        <p style="float: right; color: #333333; padding-left: 6px"><?php echo $row['cl_allcount'];?>集</p>
+                        <span style="float: right; color: #333333; padding-left: 6px"><?php echo $row['cl_allcount'];?>集</span>
                         <img src="img/count.png" style="height: 16px; float: right;">
                         
                     </span>
 
                     <span style="color: #999999;">
-                        <p style="float: right; color: #333333; padding-left: 6px; padding-right: 50px"><?php echo $row['cl_allfollow'];?></p>
+                        <span style="float: right; color: #333333; padding-left:  6px; padding-right: 50px"><?php echo $row['cl_allfollow'];?></span>
                         <img src="img/like.png" style="height: 16px; float: right; padding-left: 16px">
                         
                     </span>

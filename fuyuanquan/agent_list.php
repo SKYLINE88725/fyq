@@ -90,7 +90,7 @@ include("../include/member_level.php");
 													<?php echo $row_member['mb_id'];?>
 												</td>
 												<td>
-													<?php echo $row_member['mb_phone'];?>(<?php echo member_level($row_member['mb_level']);?>) 
+													<?php echo $row_member['mb_phone'];?>(<?php echo member_level($row_member);?>) 
 													<?php if ($row['ag_balance']) {?><br /><font color="#5745B1">代理资金剩余</font><font color="#FF4245"> ￥<?php echo number_format($row['ag_balance'],2);?></font><?php }?>
 												</td>
 												<td>

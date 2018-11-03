@@ -1,5 +1,5 @@
-<?php 
-	function member_level($mld) {
+<?php 	
+	function member_level($memberObject) {
 		$level[1] = "普通会员";
 		$level[2] = "年卡会员";
 		$level[3] = "经纪人权";
@@ -10,7 +10,19 @@
 		$level[18] = "老师";
 		$level[19] = "准股东";
 		$level[20] = "股东";
-		return $level[$mld];
+
+		// $query_teacher_check = "SELECT me_state FROM merchant_entry WHERE me_user = {$memberObject['mb_phone']}";
+		// if ($result = mysqli_query($mysqli, $query_teacher_check)){
+		// 	if($row = mysqli_fetch_assoc($result)){
+		// 		if ($row['me_state'] == 1){
+		// 		$query_teacher_update = "UPDATE fyq_member SET mb_level = 18 WHERE mb_phone = {$memberObject['mb_phone']}";
+		// 		$sql_teacher_update = mysqli_query($mysqli,$query_teacher_update);
+		// 		return $level[18];
+		// 		}
+		// 	}
+
+		// }
+		return $level[$memberObject['mb_level']];
 	}
 
 	function get_user_sales_permission(  $mysqli, $mb_phone )

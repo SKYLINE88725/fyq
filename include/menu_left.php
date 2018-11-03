@@ -16,7 +16,7 @@
 			<?php echo $row_member['mb_nick'];?>
 		</li>
 		<li class="member_level">
-			<?php echo member_level($row_member['mb_level']);?>
+			<?php echo member_level($row_member);?>
 		</li>
 		<li class="member_edit"><a href="member_config.php" target="_self">编辑</a>
 		</li>

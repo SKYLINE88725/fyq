@@ -104,7 +104,7 @@ echo "</script>"
 	</span> 
 	<span><?php echo $top_title;?></span> 
 </div>
-<style type="text/css">
+<!-- <style type="text/css">
     .viewqrcode canvas {
         width: 100%;
     }
@@ -115,296 +115,152 @@ echo "</script>"
     #area_4,#area_5,#area_6,#area_7,#area_8,#area_9 ul {
         margin-top: -13px;
     }
+</style> -->
+
+
+<style type="text/css">
+    .region_speis div {
+        display: block;
+        width: 100%;
+        height: 20px;
+        line-height: 20px;
+        text-align: center;
+        font-size: 0.8em;
+        text-decoration: none;
+    }
+    .region_level div {
+        color: #525252;
+        text-decoration: none;
+        font-size: 0.8em;
+        display: block;
+        height: 42px;
+        line-height: 42px;
+        border-bottom: 1px solid #dbdbdb;
+        padding-left: 3%;
+        background-color: #FFFFFF;
+    }
+    .open_region {
+        font-size: 0.8em;
+    }
+    .open_region span {
+        height: 36px;
+        line-height: 36px;
+        background-color: inherit;
+    }
+    .open_region div {
+        display: block;
+        float: left;
+        width: 20%;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        margin-top: 1%;
+        margin-left: 1%;
+        margin-right: 1%;
+    }
+    .region_serch {
+        margin-top: 48px;
+    }
+    .region_serch input {
+        background-color: #ffffff;
+        width: 96%;
+    }
+
+.div1 {
+    background:url(./img/vipback/vip_back1.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 100%;
+    height: 60.5333333333vw;
+}
+.div2 {
+    background:url(./img/vipback/vip_back2.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 100%;
+    height: 52.133333333vw;
+
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.div3 {
+    background:url(./img/vipback/vip_back3.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 100%;
+    height: 86.8vw;
+}
+
+.div4 {
+    background:url(./img/vipback/vip_back4.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 100%;
+    height: 64.13333333333vw;
+}
+
+.div5 {
+    background:url(./img/vipback/vip_back5.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 100%;
+    height: 123.33333333333333vw;
+}
+
+.div6 {
+    background:url(./img/vipback/vip_back6_.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100%;
+    height: 14.533333333333333vw;
+    bottom: 0px;
+    position: fixed;
+    left: 0px;
+    right: 0px;
+}
+
 </style>
-<div class="swiper-container swiper4">
-<div class="swiper-wrapper">
-		<?php 
-		$pictures = (explode("|",$row['tl_pictures']));
-		$pictures_length=count($pictures);
-		for($x=0;$x<$pictures_length;$x++)
-		{
-			if (strstr($pictures[$x],"server")) {
-				$pictures_src = "../fuyuanquan/".$pictures[$x];
-			} else {
-				$pictures_src = $pictures[$x];
-			}
+<div class="div1"></div>
+<div class="div2">
+    <video src="./video/hengchuan.mp4" controls="controls" width="100%">
+                您的浏览器不支持 video 标签。
+                </video>
+</div>
+<div class="div3"></div>
+<div class="div4"></div>
+<div class="div5"></div>
+
+<?php 
+		if ($row['shop_menu'] == "partner") {
 		?>
-		<div class="swiper-slide"><img src="<?php echo $pictures_src;?>" alt="">
+		<div class="tc_detailed_foot">
+		<button class="div6" >
+		<li class="item_buy"></li>
+		</button>
 		</div>
-		<?php 
+<?php
 		}
-		?>
-	</div>
-	<!-- Add Pagination -->
-	<div class="swiper-pagination"></div>
-	<!-- Add Arrows -->
-	<div class="swiper-button-next"></div>
-	<div class="swiper-button-prev"></div>
-</div>
+?>
+<!-- <div class="video" style = "margin-top: 150px;
+    margin-left: 20px;width: 90%">
 
-<div class="tc_detailed_">
-	<ul>
-		<li class="tc_detailed_line1">
-			<p class="tc_detailed_title">
-				<?php echo $row['tl_name'];?>
-			</p>
-		</li>
-		<li>
-			<p>
-				<?php $mediaSrc= $row['tl_video'];?>
-				<audio id="player" controls>
-					
-					<!-- <source src="<?php echo $mediaSrc;?>"> -->
-					<!-- <source id="source" src="<?php echo $tid;?>"> -->
-				</audio>
-			</p>
-		</li>
-		<li><button class="btn" onClick="test_pay_success()"> Test pay_success</button></li>
-		<li class="tc_detailed_line2">
-			<p class="tc_detailed_price">
-				<span>
-					<?php 
-					if ($row['tl_point_type'] == "0") {
-					?>
-						<!-- 幸福价￥<?php echo $row['tl_price'];?><i style="margin-left: 5px; text-decoration: line-through; color: #959595; font-size: 0.8em;">原价￥<?php echo $row['tl_original'];?></i> -->
-						<?php if ($row_cate['ic_name']) {?>
-						<span class="item_cate">
-							<?php echo $row_cate['ic_name'];?>
-						</span>
-						<?php }?>
-					<?php 
-					}
-					?>
-					<?php 
-					if ($row['tl_point_type'] == "1") {
-					?>
-					<img src="img/point_ico.png" alt="幸福豆图标"><?php echo $row['tl_point_commodity'];?>
-						<?php 
-							if ($row_cate['ic_name']) {
-						?>
-						<span class="item_cate">
-							<?php echo $row_cate['ic_name'];?>
-						</span>
-						<?php 
-							}
-						?>
-						<?php 
-						if ($member_login) {
-						?>
-						<span class="member_point">可用幸福豆<font color="#f39800"><?php echo $member_view['mb_point'];?></font></span>
-						<?php 
-						}
-						?>
-					<?php 
-					}
-					?>
-					<?php 
-					if ($row['tl_point_type'] == "2") {
-					?>
-					￥<?php echo $row['tl_price'];?>
-					<img style="margin-left: 10px;" src="img/point_ico.png" alt="幸福豆图标"><?php echo $row['tl_point_commodity'];?>
-						<?php 
-							if ($row_cate['ic_name']) {
-						?>
-						<span class="item_cate">
-							<?php echo $row_cate['ic_name'];?>
-						</span>
-						<?php 
-							}
-						?>
-						<?php 
-						if ($member_login) {
-						?>
-						<span class="member_point">可用幸福豆<font color="#f39800"><?php echo $member_view['mb_point'];?></font></span>
-						<?php 
-						}
-						?>
-					<?php 
-					}
-					?>
-					<?php 
-					if ($row['tl_point_type'] == "3") {
-					?>
-					<?php echo $row['tl_price']/10;?>折
-						<?php 
-							if ($row_cate['ic_name']) {
-						?>
-						<span class="item_cate">
-							<?php echo $row_cate['ic_name'];?>
-						</span>
-						<?php 
-							}
-						?>
-					<?php 
-					}
-					?>
-                    <?php 
-					if ($row['tl_point_type'] == "4") {
-					?>
-						<!-- 幸福价￥<?php echo $row['tl_price'];?><i style="margin-left: 5px; text-decoration: line-through; color: #959595; font-size: 0.8em;">原价￥<?php echo $row['tl_original'];?></i> -->
-						<?php if ($row_cate['ic_name']) {?>
-						<span class="view_cate">
-							<?php echo $row_cate['ic_name'];?>
-						</span>
-						<?php }?>
-					<?php 
-					}
-					?>
-				</span>
-				
-			</p>
-		</li>
-		<li class="tc_detailed_line3">
-			<p class="tc_detailed_sales">月销 <?php echo $row['tl_Sales'];?> 笔</p>
-			<?php 
-				if (strstr($HTTP_USER_AGENT,"fuyuanquan.net")) {
-					$tc_mainimg = str_replace("..","",$row['tc_mainimg']);
-			?>
-			<p class="tc_detailed_share_txt" onClick="wxshare('<?php echo utf8_strcut(wxstrFilter($row['tl_name']),35,'');?>', '<?php echo utf8_strcut(wxstrFilter($row['tl_summary']),40,'');?>', '../<?php echo $tc_mainimg;?>', '<?php echo $picUrl;?>')">点击分享</p>
-			<?php 
-				} else {
-			?>
-			<!-- <p class="tc_detailed_share_txt" onClick="clipboard_share('<?php echo $picUrl;?>')">复制链接</p> -->
-			<?php 
-				}
-			?>
-		</li>
-		<!-- <?php
-			if( $member_login && ( $row['tl_point_type'] == "3" || $row['tl_point_type'] == "4" || $type != "company" ) ){
-		?>
-			<li class="tc_detailed_line4">
-				<a href="/member_shipping_address.php?from_detail=1&detail_item=<?php echo $_GET['view']; ?>&detail_type=<?php echo $_GET['type']; ?>">
-					<p class="tc_detailed_shipping_address" style="float: left;">收货地址</p>
-				</a>
-				<a href="/member_shipping_address.php?from_detail=1&detail_item=<?php echo $_GET['view']; ?>&detail_type=<?php echo $_GET['type']; ?>" style="float: right;">
-					<p class="point_1"></p>
-				</a>
-			</li>
-		<?php
-			}
-		?> -->
-	</ul>
-</div>
-<?php
-if ( $type == "company" ) {
-	?>
-	<div class="businesses_detailed_account">
-		<ul>
-			<li><img src="<?php echo $row_view['cl_logo'];?>" alt="">
-			</li>
-			<li>
-				<p>
-					<?php echo $row_view['cl_name'];?>
-				</p>
-				<p class="detailed_view_region">
-					<font color="#828282">
-						<?php echo $row['tc_province1'];?>
-						<?php echo $row['tc_city1'];?>
-						<?php echo $row['tl_district1'];?>
-					</font>
-				</p>
-                <p id="user_phone">电话：
-						<?php echo $row['tl_phone'];?>
-				</p>
-			</li>
-			<li><a href="user_blog.php?id=<?php echo $row_view['cl_id'];?>" target="_self">详情</a>
-			</li>
-		</ul>
-		<ul>
-			<li><a href="#" target="_self">学院宝贝 <font color="#707070"><?php echo $row_view['cl_allcount'];?></font></a>
-			</li>
-			<li><a href="my_commodity_add1.php" target="_self">学院销量 <font color="#707070"><?php echo $row_view['cl_allsales'];?></font></a>
-			</li>
-			<li><a href="index_test.php" target="_self">关注人数 <font color="#707070"><?php echo $row_view['cl_allfollow'];?></font></a>
-			</li>
-		</ul>
-	</div>
-	<?php
-}
-?>
-<?php
-if ($row['tl_summary']){
-?>
-	<div class="tc_detailed_simple"><?php echo nl2br($row['tl_summary']);?></div>
-<?php
-}
-?>
-	<div class="tc_detailed_content">
-		
-	</div>
+		<video src="./video/hengchuan.mp4" controls="controls" width="100%">
+              
+        </video>
+</div> -->
 
-<div class="tc_detailed_foot" style="z-index: 100;">
-	<ul>
-		<li>
-            <?php if($member_login && $row["mb_nick"]): ?>
-                <span style="width:20%;" onclick="location.href='/chat/chat.php?partner=<?php echo $row["tl_phone"];?>'"><img src="images/chat.png" id="toggle-chat"></span>
-            <?php endif;?>
-            <?php
-            if ($row['GPS_X'] && $row['GPS_Y']) {
-            ?>
-            <span class="tc_detailed_foot_gps">查看路线</span>
-            <span class="tc_detailed_foot_follow1"><img id="follow_<?php echo $row['tl_id'];?>" onClick="follows('<?php echo $tid;?>','<?php echo $member_login;?>','<?php echo $follow_img;?>')" src="<?php echo $follow_img;?>" alt="收藏"></span>
-            <?php 
-            } else {
-            ?>
-            <span class="tc_detailed_foot_follow2"><img id="follow_<?php echo $row['tl_id'];?>" onClick="follows('<?php echo $tid;?>','<?php echo $member_login;?>','<?php echo $follow_img;?>')" src="<?php echo $follow_img;?>" alt="收藏"></span>
-            <?php }?>
-        </li>
+<!-- <div class="tc_detailed_foot" style="z-index: 100;">
+	<ul>	
 		<?php 
 		if ($row['shop_menu'] == "partner") {
 		?>
-		<li class="item_buy" >立即获取</li>
-		<?php 
-		} else if($row['shop_menu'] == "teacher"){
-			echo '<li class="item_buy" style="pointer-events: none;background-color: grey;">立即获取</li>';
-		}
-		?>
-		<?php 
-		if ($row['tl_point_type'] == "1" && $member_login == $row['tl_phone']) {
-		?>
-		<li class="item_point" style="pointer-events: none;background-color: grey;">立即兑换</li>
-		<?php 
-		} else if($row['tl_point_type'] == "1" && $member_login != $row['tl_phone']){
-		?>
-		<li class="item_point">立即兑换</li>
+
+		<li class="item_buy" style="color: white;background-color: red;margin-bottom: 50px; margin-left: 100px;">我要助力19.9元</li>
 		<?php
 		}
 		?>
-		<?php 
-		if ($row['tl_point_type'] == "2" && $member_login == $row['tl_phone']) {
-			echo '<li class="item_buy" style="pointer-events: none;background-color: grey;">立即获取</li>';
-		} else if($row['tl_point_type'] == "2" && $member_login != $row['tl_phone']){
-		?>
-		<li class="item_buy">立即获取</li>
-		<?php 
-		}
-		?>
-		<?php 
-		if ($row['tl_point_type'] == "3" && $member_login == $row['tl_phone']) {
-			echo '<li class="item_scan" style="pointer-events: none;background-color: grey;">立即支付</li>';
-		} else if($row['tl_point_type'] == "3" && $member_login != $row['tl_phone']){
-		?>
-		<li class="item_scan" onclick='check_shipping_address("scan_pay.php?bid=<?php echo $row['tl_id'];?>")'><a>立即支付</a></li>
-		<?php 
-		}
-		?>
-        <?php 
-		if ($row['tl_point_type'] == "4" && $member_login == $row['tl_phone']) {
-			echo '<li class="item_scan" style="pointer-events: none;background-color: grey;">立即支付</li>';
-		} else if($row['tl_point_type'] == "4" && $member_login != $row['tl_phone']){
-		?>
-		<li class="item_scan"  onclick='check_shipping_address("vip_card.php?bid=<?php echo $row['tl_id'];?>")'>
-			<a>立即获取</a>
-		</li>
-		
-		<?php 
-		}
-		?>
 	</ul>
-
-
-
-</div>
+</div> -->
 
 <div class="tc_detailed_confirm">
 	<ul>
@@ -462,46 +318,12 @@ if ($type == "company") {
 		<?php 
 }
 ?>
-		<!-- <li class="tc_detailed_line4" id="shipping_address" style="background-color: white;margin-bottom: 20px;margin-top: 20px;">
-			<?php 
-				if($member_login){
-			?>
-			<a href="/member_shipping_address.php?from_detail=1&detail_item=<?php echo $_GET['view']; ?>&detail_type=<?php echo $_GET['type']; ?>">
-				<p class="tc_detailed_shipping_address" style="float: left;">收货地址</p>
-			</a>
-			<a href="/member_shipping_address.php?from_detail=1&detail_item=<?php echo $_GET['view']; ?>&detail_type=<?php echo $_GET['type']; ?>" style="float: right;">
-				<p class="point_2"></p>
-			</a>
-			<?php
-			}?>
-		</li> -->
+		
 		<li class="tc_detailed_confirm_confirm"> 确定 </li>
 	</ul>
 </div>
 <div class="tc_detailed_bg"></div>
-<?php
-if($member_login && $row["mb_nick"]):
-    ?>
-    <script type="text/javascript" src="/js/chat.js"></script>
-    <div id="chatContainer" style="display: none;">
-        <div id="chatTitleBar"><?php echo $row["mb_nick"]?></div>
 
-        <input id="chatTo" style="display: none;" value="<?php echo $row["tl_phone"]?>">
-        <input id="to_ico" style="display: none;" value="<?php echo $row["mb_ico"]?>">
-        <input id="me_ico" style="display: none;" value="<?php echo $member_view['mb_ico']?>">
-
-        <div id="chatLineHolder"></div>
-        <div id="chatBottomBar">
-            <form id="submitForm" method="post" action="">
-                <input id="chatText" name="chatText" class="rounded" maxlength="255" />
-                <input type="submit" class="blueButton" value="发送" />
-            </form>
-
-        </div>
-    </div>
-    <?php
-endif;
-?>
 <div class="view_qrcode">
 	<ul>
 		<li>
@@ -578,7 +400,7 @@ endif;
         $('.viewqrcode').qrcode({
             text: "<?php echo $picUrl;?>"
         })
-		$( ".top_navigate" ).append( "<span class=\"tc_qrcode\"><img src=\"img/qrcode_ico.png\" alt=\"二维码\"></span>" );
+		// $( ".top_navigate" ).append( "<span class=\"tc_qrcode\"><img src=\"img/qrcode_ico.png\" alt=\"二维码\"></span>" );
 
 		$( ".tc_detailed_content" ).css( {
 			"display": "block",
@@ -590,6 +412,7 @@ endif;
 		function(data,status){
 		$(".tc_detailed_content").html(data);
 			// scrollTo('.tc_detailed_content');
+			//alert(data);
 		});
 
 		// $( ".tc_comtent_more p" ).click( function () {
@@ -666,16 +489,6 @@ endif;
 		});
 	} );
 
-	function test_pay_success() {
-			$.post("pay_success.php",
-				{
-					
-				},
-				function(data,status){
-					
-				});
-		}
-
 	//点击更多滑倒详细内容
 	function scrollTo(ele, speed) {
 		if (!speed) speed = 600;
@@ -749,7 +562,7 @@ endif;
 			} else if (data.length > 30) {
                 document.title = data;
 				return;
-            } else if (data) {
+            } else if (data) { 
 				location.href = "payment.php?tradeno=" + data;
 			}
 	});
@@ -766,60 +579,8 @@ endif;
 		}
 	});
 </script>
-<?php 
-$endlat = $row['GPS_Y'];
-$endlon = $row['GPS_X'];
-?>
-<script type="text/javascript">
-var isiPhone = userAgent.indexOf('iPhone') != -1;
-$(".tc_detailed_foot_gps").click(function(){
-    //if (isfuyuanquan) {
-        YDB.NavigatorInfo("getnavigator");
-    //} else {
-    //    alert("导航功能只能在 APP 内使用");
-    //}
-})
-  
-function DoWithGPSapple (la,lo){
-    startlats = la-0.006;
-    startlons = lo-0.0065;
-    endlats = <?php echo $endlat;?>-0.006;
-    endlons = <?php echo $endlon;?>-0.0065;
-    YDB.appleNavigation(startlats, startlons, endlats, endlons);
-}
-function DoWithGPSBaidu (la,lo){
-    YDB.NavigatorBaiduPath(la, lo, "<?php echo $endlat;?>", "<?php echo $endlon;?>");
-}
-function DoWithGPSGaode (la,lo){
-    startlats = la-0.006;
-    startlons = lo-0.0065;
-    endlats = <?php echo $endlat;?>-0.006;
-    endlons = <?php echo $endlon;?>-0.0065;
-    YDB.NavigatorGaodePath(startlats, startlons, "", endlats, endlons, "");
-}
-  
-function getnavigator(info){
-    var info = $.parseJSON(info);
-    var baiduMap = info.bMap;
-    var gaodeMap = info.aMap;
-    var googleMap = info.gMap;
-    if (isiPhone) {
-        YDB.GetGPS('DoWithGPSapple');
-    } else {
-        if (baiduMap == "true") {
-            YDB.GetGPS('DoWithGPSBaidu');
-            return false;
-        } else
-        if (gaodeMap == "true") {
-            YDB.GetGPS('DoWithGPSGaode');
-            return false;
-        } else {
-            alert("请先安装百度地图或高德地图");
-            return false;
-        }
-    }
-}
-</script>
+
+
 <?php
 include( "include/foot_.php" );
 ?>

@@ -1,8 +1,8 @@
 <?php
 include("db_config.php");
-$head_title = "精品";
+$head_title = "会员";
 include( "include/head_.php" );
-$top_title = "精品";
+$top_title = "会员";
 $return_url = "..";
 include( "include/top_navigate.php" );
 $query = "SELECT * FROM teacher_list where shop_menu='partner' and tl_class='0' and item_display='1' ORDER BY item_lever asc";

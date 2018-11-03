@@ -110,7 +110,7 @@ include("../include/member_level.php");
 													<?php echo "2".$row['mb_id'];?>
 												</td>
 												<td>
-													<p><span style="font-size: 1.6em;"><?php echo $row['mb_phone'];?></span> (<?php echo member_level($row['mb_level']);?>) 
+													<p><span style="font-size: 1.6em;"><?php echo $row['mb_phone'];?></span> (<?php echo member_level($row);?>) 
 													<?php if ($row_agent['ag_balance']) {?><font color="#5745B1">代理资金剩余</font><font color="#FF4245"> ￥<?php echo number_format($row_agent['ag_balance'],2);?></font><?php }?></p>
 													<p style="font-size: 1em;">推荐人 (<font color="#3E66FF"><?php echo $row_recommend['mb_nick'];?></font>) : <?php echo $row['mb_recommend'];?></p>
 													<p>

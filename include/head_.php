@@ -22,7 +22,7 @@
     <link rel="stylesheet" href="/css/ng.css" />
     <link rel="stylesheet" href="/css/liMarquee.css" />
     <link rel="stylesheet" href="css/qrcode.css" />
-	  	<link rel="stylesheet" href="font-awesome-4.7.0/css/font-awesome.css">
+	<link rel="stylesheet" href="font-awesome-4.7.0/css/font-awesome.css">
 
     <script type="text/javascript" src="/js/jquery-1.10.2.js" ></script>
     <script type="text/javascript" src="/js/jquery-3.2.1.min.js"></script>
@@ -40,7 +40,7 @@
     <script type="text/javascript" src="/js/jquery.cookie.js"></script>
     <script type="text/javascript" src="/js/jquery.qrcode.min.js"></script>
     <script type="text/javascript" src="/js/gpsmite.js"></script>
-    <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=vmmlFR9V8hDzNoPgpGOh8NwGpfjqaGDE"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=vmmlFR9V8hDzNoPgpGOh8NwGpfjqaGDE"></script>
     <script type="text/javascript" src="/js/jquery_fyq.js"></script>
     <script type="text/javascript" src="/js/jquery.liMarquee.js"></script>
     <script src="/js/mui.js"></script>

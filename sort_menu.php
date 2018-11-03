@@ -1,7 +1,9 @@
+<div style="position: absolute;right: 38px;top: 0px"><img src="img/cate-icon-shadow.png" style="height: 40px"></div>
 <div class="horizontal-list" id="horizontal_list_div">
 	<ul id="horizontal-list">
 		<li value="0" class="active" id="all"><a>推荐</a></li>
-		<li value="-1" id="cate" onclick="window.open('item_cate.php', '_self')"><a ><img src="img/cate.png"style="width: 20px"></a></li>
+		<li value="-1" id="vip" onclick="window.open('huiyuan.php', '_self')"><a><img src="img/vip.png" style="width: 14px">VIP</a></li>
+		<!-- <li value="-1" id="vip" onclick="window.open('vip.php', '_self')"><a ><img src="img/vip.png"style="width: 20px">VIP</a></li> -->
 		<?php 
 		$query_cate = "SELECT * FROM item_cate where ic_type = 'teacher'";
 		if ($result_cate = mysqli_query($mysqli,$query_cate)) {
@@ -14,5 +16,5 @@
 		?>
 
 	</ul>
-	<!-- <ul><li value="-1" id="vip"><a><img src="img/cate.png"style="width: 45px"></a></li></ul> -->
 </div>
+<div style="position: absolute;right: 0px;top: 0px"><a href="item_cate.php"><img src="img/cate-icon.png" style="height: 40px"></a></div>
