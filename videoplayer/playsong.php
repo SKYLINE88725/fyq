@@ -2,10 +2,10 @@
 
 include("../db_config.php");
 
-if (isset($_GET["tid"])) {
-    $tid = $_GET["tid"];
+if (isset($_GET["filename"])) {
+    $filename = $_GET["filename"];
 } else {
-    $tid = '';
+    $filename = '';
 }
 
 if (isset($_COOKIE["member"])) {
@@ -45,7 +45,7 @@ class VideoStream
     private function setHeader()
     {
         ob_get_clean();
-        header("Content-Type: audio/mpeg");//video/mp4
+        header("Content-Type: video/mp4");
         header("Cache-Control: max-age=2592000, public");
         header("Expires: ".gmdate('D, d M Y H:i:s', time()+2592000) . ' GMT');
         header("Last-Modified: ".gmdate('D, d M Y H:i:s', @filemtime($this->path)) . ' GMT' );
@@ -119,7 +119,6 @@ class VideoStream
             echo $data;
             flush();
             $i += $bytesToRead;
-            break;
         }
     }
      
@@ -135,53 +134,58 @@ class VideoStream
     }
 }
 
-$allowedUser = False;
+$allowedUser = true;
 //echo $tid;
 //echo $member_login;
-if ($tid !== '' and $member_login !== ''){
-    $query = "SELECT count(*) FROM payment_list WHERE pay_member = '{$member_login}' and pay_shop = {$tid} and pay_status = 1;";
+// if ($tid !== '' and $member_login !== ''){
+//     $query = "SELECT count(*) FROM payment_list WHERE pay_member = '{$member_login}' and pay_shop = {$tid} and pay_status = 1;";
     
-    $result = mysqli_query($mysqli, $query);
-    if ($result){
-        $paid = mysqli_fetch_array($result, MYSQLI_NUM);
-        if ($paid[0]>0)
-            $allowedUser = true;
-        //echo $query;
-    }
-    else{
-        //echo "Query Error";
-    }
-}
+//     $result = mysqli_query($mysqli, $query);
+//     if ($result){
+//         $paid = mysqli_fetch_array($result, MYSQLI_NUM);
+//         if ($paid[0]>0)
+//             $allowedUser = true;
+//         //echo $query;
+//     }
+//     else{
+//         //echo "Query Error";
+//     }
+// }
 
-if (!$allowedUser){ // If this media 's owner is me.
-    $query1 = "SELECT count(*) FROM teacher_list WHERE tl_id = '{$tid}' and tl_phone = '{$member_login}'" ;
-    $result1 = mysqli_query($mysqli, $query1);
+// if (!$allowedUser){ // If this media 's owner is me.
+//     $query1 = "SELECT count(*) FROM teacher_list WHERE tl_id = '{$tid}' and tl_phone = '{$member_login}'" ;
+//     $result1 = mysqli_query($mysqli, $query1);
     
-    if ($result1){
-        $owner = mysqli_fetch_array($result1, MYSQLI_NUM);
-        if ($owner[0]>0)
-            $allowedUser = true;
-        //echo $query1;
-    }
-    else{
-        echo "Query1 Error";
-    }
+//     if ($result1){
+//         $owner = mysqli_fetch_array($result1, MYSQLI_NUM);
+//         if ($owner[0]>0)
+//             $allowedUser = true;
+//         //echo $query1;
+//     }
+//     else{
+//         echo "Query1 Error";
+//     }
 
-}
+// }
 
 if ($allowedUser){
 
-    $query2 = "SELECT * FROM teacher_list WHERE tl_id = {$tid};";
-    $result2 = mysqli_query($mysqli, $query2);
-    if ($result2){
-        $row = mysqli_fetch_assoc($result2);
-        $filepath = $row['tl_video'];//"../uploads/771910439347464.wav";
+    // $query2 = "SELECT * FROM teacher_list WHERE tl_id = {$tid};";
+    // $result2 = mysqli_query($mysqli, $query2);
+    $filepath = "../uploads/";
+    $filepath = $filepath.end(explode('.', $filename));
+    $filepath = $filepath."/";
+    $filepath = $filepath.$filename;
+
+    //if ($result2){
+        //$row = mysqli_fetch_assoc($result2);
+        
         $stream = new VideoStream($filepath);
         $stream->start();
-    }
-    else{
-        echo "Something went wrong!!";
-    }    
+    //}
+    //else{
+    //    echo "Something went wrong!!";
+    //}    
 }
 else{
     //echo "ERROR!";

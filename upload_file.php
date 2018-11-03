@@ -38,16 +38,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 // usleep(5000);
 
 // Settings
-$targetDir = ini_get("upload_tmp_dir") . DIRECTORY_SEPARATOR . "plupload";
-//$targetDir = 'uploads';
+
 $cleanupTargetDir = true; // Remove old files
 $maxFileAge = 5 * 3600; // Temp file age in seconds
-
-
-// Create target dir
-if (!file_exists($targetDir)) {
-	@mkdir($targetDir);
-}
 
 // Get a file name
 if (isset($_REQUEST["name"])) {
@@ -58,6 +51,15 @@ if (isset($_REQUEST["name"])) {
 	$fileName = uniqid("file_");
 }
 
+$extension = explode('/',$_FILES["file"]["type"])[1];
+//$targetDir = ini_get("upload_tmp_dir") . DIRECTORY_SEPARATOR . "plupload";
+$targetDir = 'uploads/'.$extension;
+// Create target dir
+if (!file_exists($targetDir)) {
+	@mkdir($targetDir);
+}
+
+$fileName = uniqid("file_").".".$extension;
 $filePath = $targetDir . DIRECTORY_SEPARATOR . $fileName;
 
 // Chunking might be enabled
@@ -118,10 +120,10 @@ while ($buff = fread($in, 4096)) {
 // Check if file has been uploaded
 if (!$chunks || $chunk == $chunks - 1) {
 	// Strip the temp .part suffix off 
-	rename("{$filePath}.part", $filePath);
+    rename("{$filePath}.part", $filePath);    
 }
 
 // Return Success JSON-RPC response
-die('{"jsonrpc" : "2.0", "result" : null, "id" : "id"}');
+die('{"jsonrpc" : "2.0", "result" : null, "id" : "id", "filename":"'.$fileName.'"}');
 
 ?>

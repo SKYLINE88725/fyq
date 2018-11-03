@@ -222,13 +222,18 @@ if (isset($_POST["nd_point"])) {
     $nd_point = '';
 }
 if (isset($_POST["media_filename"])) {
-    $media_filename = "../uploads/".$_POST["media_filename"].".wav";
+    $media_filename = $_POST["media_filename"];
 } else {
     $media_filename = '';
 }
+if (isset($_POST["media_filetitle"])) {
+    $media_filetitle = $_POST["media_filetitle"];
+} else {
+    $media_filetitle = '';
+}
 
 $com_admin = "user";
-$sql = "INSERT INTO teacher_list (tl_name, tl_pictures, tl_video, tl_price, tl_Sales, tc_province1, tc_city1, tl_district1, tl_address, tl_class, tl_summary, tl_detailed, tc_mainimg, tl_cate, item_display, GPS_X, GPS_Y, tl_distribution, tl_original, tl_supplyprice, tl_phone, tl_point_commodity, tl_point_type, item_array, level_one_vip1, level_two_vip1, level_three_vip1, level_one_vip2, level_two_vip2, level_three_vip2, shop_menu, index_hot, item_admin, point_one_vip1, point_two_vip1, point_three_vip1, point_one_vip2, point_two_vip2, point_three_vip2, pushmsg_id, item_recommend, vip_point, spare_gold, nd_point, refund_status,sub_id) VALUES ('{$com_title}', '{$com_parentFileBox}', '{$media_filename}', '{$com_price}', '0', '{$com_province1}', '{$com_city1}', '{$com_district1}', '{$com_address}', '{$com_class}', '{$com_summary}', '{$com_content}', '{$com_mainimg}', '{$com_cate}', '{$com_display}', '{$com_gpsx}', '{$com_gpsy}', '{$com_distribution_level}', '{$com_original}', '{$com_supplyprice}', '{$com_phone}', '{$com_point}', '{$com_point_type}', '{$com_array}', '{$vip1level1}', '{$vip1level2}', '{$vip1level3}', '{$vip2level1}', '{$vip2level2}', '{$vip2level3}', '{$com_shopmenu}', '{$com_index}', '{$com_admin}', '{$vip1point1}', '{$vip1point2}', '{$vip1point3}', '{$vip2point1}', '{$vip2point2}', '{$vip2point3}', '{$com_pushmsg}', '{$com_recommend}', '{$com_vpoint}', '{$com_spare}', '{$nd_point}', '{$com_refund}',{$sub_id})";
+$sql = "INSERT INTO teacher_list (tl_name, tl_pictures, tl_video, tl_price, tl_Sales, tc_province1, tc_city1, tl_district1, tl_address, tl_class, tl_summary, tl_detailed, tc_mainimg, tl_cate, item_display, GPS_X, GPS_Y, tl_distribution, tl_original, tl_supplyprice, tl_phone, tl_point_commodity, tl_point_type, item_array, level_one_vip1, level_two_vip1, level_three_vip1, level_one_vip2, level_two_vip2, level_three_vip2, shop_menu, index_hot, item_admin, point_one_vip1, point_two_vip1, point_three_vip1, point_one_vip2, point_two_vip2, point_three_vip2, pushmsg_id, item_recommend, vip_point, spare_gold, nd_point, refund_status,sub_id) VALUES ('{$com_title}', '{$com_parentFileBox}', '{$media_filename}', '{$com_price}', '0', '{$com_province1}', '{$com_city1}', '{$com_district1}', '{$com_address}', '{$com_class}', '{$com_summary}', '{$com_content}', '{$media_filetitle}', '{$com_cate}', '{$com_display}', '{$com_gpsx}', '{$com_gpsy}', '{$com_distribution_level}', '{$com_original}', '{$com_supplyprice}', '{$com_phone}', '{$com_point}', '{$com_point_type}', '{$com_array}', '{$vip1level1}', '{$vip1level2}', '{$vip1level3}', '{$vip2level1}', '{$vip2level2}', '{$vip2level3}', '{$com_shopmenu}', '{$com_index}', '{$com_admin}', '{$vip1point1}', '{$vip1point2}', '{$vip1point3}', '{$vip2point1}', '{$vip2point2}', '{$vip2point3}', '{$com_pushmsg}', '{$com_recommend}', '{$com_vpoint}', '{$com_spare}', '{$nd_point}', '{$com_refund}',{$sub_id})";
 $sql_commodity = mysqli_query($mysqli,$sql);
 if ($sql_commodity) {
 	echo 1;

@@ -98,6 +98,18 @@ if (strstr($_SERVER['HTTP_USER_AGENT'],"fuyuanquan.net")) {
 echo "<script> var tid=".$tid;
 echo "</script>"
 ?>
+<style>
+	.hide{
+		display: none;
+	}
+	.show{
+		display: block;
+	}
+</style>
+<link href="https://vjs.zencdn.net/7.2.4/video-js.css" rel="stylesheet">
+<script src="https://vjs.zencdn.net/7.2.4/video.js"></script>
+<link href="./videoplayer/css/videoplayer.css" rel="stylesheet">
+
 <div class="top_navigate"> 
 	<span>
 		<?php echo $top_navigate_return;?>
@@ -152,108 +164,15 @@ echo "</script>"
 		<li>
 			<p>
 				<?php $mediaSrc= $row['tl_video'];?>
-				<audio id="player" controls>
-					
-					<!-- <source src="<?php echo $mediaSrc;?>"> -->
-					<!-- <source id="source" src="<?php echo $tid;?>"> -->
+				<video id="my-player" controls playsinline class="video-js <?php $l=explode(".", $row['tl_video']); echo end($l) !== "mp4" ? "hide":"show"; ?>" >
+					<source src="<?php echo 'videoplayer/playsong.php?filename='.$row['tl_video'] ?>">
+                </video>
+				<audio class="<<?php $l=explode(".", $row['tl_video']); echo end($l) !== "mp4" ? "show":"hide"; ?>>" controls>					
+					<source src="<?php echo 'videoplayer/playsong.php?filename='.$row['tl_video'] ?>">
 				</audio>
 			</p>
-		</li>
-		<li><button class="btn" onClick="test_pay_success()"> Test pay_success</button></li>
-		<li class="tc_detailed_line2">
-			<p class="tc_detailed_price">
-				<span>
-					<?php 
-					if ($row['tl_point_type'] == "0") {
-					?>
-						<!-- 幸福价￥<?php echo $row['tl_price'];?><i style="margin-left: 5px; text-decoration: line-through; color: #959595; font-size: 0.8em;">原价￥<?php echo $row['tl_original'];?></i> -->
-						<?php if ($row_cate['ic_name']) {?>
-						<span class="item_cate">
-							<?php echo $row_cate['ic_name'];?>
-						</span>
-						<?php }?>
-					<?php 
-					}
-					?>
-					<?php 
-					if ($row['tl_point_type'] == "1") {
-					?>
-					<img src="img/point_ico.png" alt="幸福豆图标"><?php echo $row['tl_point_commodity'];?>
-						<?php 
-							if ($row_cate['ic_name']) {
-						?>
-						<span class="item_cate">
-							<?php echo $row_cate['ic_name'];?>
-						</span>
-						<?php 
-							}
-						?>
-						<?php 
-						if ($member_login) {
-						?>
-						<span class="member_point">可用幸福豆<font color="#f39800"><?php echo $member_view['mb_point'];?></font></span>
-						<?php 
-						}
-						?>
-					<?php 
-					}
-					?>
-					<?php 
-					if ($row['tl_point_type'] == "2") {
-					?>
-					￥<?php echo $row['tl_price'];?>
-					<img style="margin-left: 10px;" src="img/point_ico.png" alt="幸福豆图标"><?php echo $row['tl_point_commodity'];?>
-						<?php 
-							if ($row_cate['ic_name']) {
-						?>
-						<span class="item_cate">
-							<?php echo $row_cate['ic_name'];?>
-						</span>
-						<?php 
-							}
-						?>
-						<?php 
-						if ($member_login) {
-						?>
-						<span class="member_point">可用幸福豆<font color="#f39800"><?php echo $member_view['mb_point'];?></font></span>
-						<?php 
-						}
-						?>
-					<?php 
-					}
-					?>
-					<?php 
-					if ($row['tl_point_type'] == "3") {
-					?>
-					<?php echo $row['tl_price']/10;?>折
-						<?php 
-							if ($row_cate['ic_name']) {
-						?>
-						<span class="item_cate">
-							<?php echo $row_cate['ic_name'];?>
-						</span>
-						<?php 
-							}
-						?>
-					<?php 
-					}
-					?>
-                    <?php 
-					if ($row['tl_point_type'] == "4") {
-					?>
-						<!-- 幸福价￥<?php echo $row['tl_price'];?><i style="margin-left: 5px; text-decoration: line-through; color: #959595; font-size: 0.8em;">原价￥<?php echo $row['tl_original'];?></i> -->
-						<?php if ($row_cate['ic_name']) {?>
-						<span class="view_cate">
-							<?php echo $row_cate['ic_name'];?>
-						</span>
-						<?php }?>
-					<?php 
-					}
-					?>
-				</span>
-				
-			</p>
-		</li>
+		</li>		
+		
 		<li class="tc_detailed_line3">
 			<p class="tc_detailed_sales">月销 <?php echo $row['tl_Sales'];?> 笔</p>
 			<?php 
@@ -552,6 +471,7 @@ endif;
         var mb_id = "<?php echo $mb_id;?>";
 	var shipping_id = "<?php echo $mb_shipping_id;?>";
 
+
 	$( document ).ready( function () {
 		if ( mb_id ) {
 			$.ajax({
@@ -664,7 +584,18 @@ endif;
 				
 			}
 		});
-	} );
+		var player = videojs('my-player', options, function onPlayerReady() {
+			videojs.log('Your player is ready!');
+
+			// In this context, `this` is the player that was created by Video.js.
+			this.play();
+
+			// How about an event listener?
+			this.on('ended', function() {
+				videojs.log('Awww...over so soon?!');
+			});
+		});
+	});
 
 	function test_pay_success() {
 			$.post("pay_success.php",
@@ -707,6 +638,7 @@ endif;
 		}
 			
 	}
+
 </script>
 <script type="text/javascript">
         $(".tc_detailed_confirm_confirm, .tc_detailed_foot .item_point").click(function(){ 

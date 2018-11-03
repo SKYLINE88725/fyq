@@ -70,16 +70,16 @@ include("include/top_navigate_commodity.php");
     ?>
                 <div class="mui-card" id="subject_<?php echo $row_list['sub_id'];?>">
                     
-                    <div class="mui-card-header mui-card-media card businesses_blog_list_small mui-pull-left" style="width: 30%" ><a class="mui-media-object" href="lecture_list.php?sub_id=<?php echo $row_list['sub_id'];?>" target="_self"><img src="<?php echo $row_list['sub_picture'];?>" alt=""></a></div>
+                    <div class="mui-card-media card businesses_blog_list_small mui-pull-left" style="width: 30%;padding: 10px" ><a class="mui-media-object" href="lecture_list.php?sub_id=<?php echo $row_list['sub_id'];?>" target="_self"><img src="<?php echo $row_list['sub_picture'];?>" alt=""></a></div>
                     <div class="mui-card-content mui-pull-left" style="padding: 6px; width: 70%">
                         
                             <p class="businesses_blog_list_title mui-h4" style="text-overflow: ellipsis;white-space: nowrap;overflow: hidden;"><?php echo $row_list['sub_title'];?></p>
                             <p class="businesses_blog_list_title mui-h5" style="text-overflow: ellipsis;white-space: nowrap;overflow: hidden;"><?php echo $row_list['sub_desc'];?></p>
                             <p class="businesses_blog_list_title mui-h5"><?php echo $row_list['sub_time'];?></p>
                             <p class="businesses_blog_list_cate" style="width: 100%">
-                                    <span style="width: 25%;padding: 6px;background-color: #ff655e"><?php echo $row_cate['ic_name'];?></span>
-                                    <span style="width: 25%; float: right;"><?php echo $row_list['sub_lecture_count'];?>集</span><img src="img/series.png" style="vertical-align: top;width: 24px; float: right;">
-                                    <span style="width: 25%; float: right;margin: 2px 5px"><?php echo $row_list['sub_follow_count'];?></span><img src="img/reciever.png" style="vertical-align: top;width: 24px; float: right;">
+                                    <span style="width: 20%;padding: 6px;background-color: #ff655e"><?php echo $row_cate['ic_name'];?></span>
+                                    <span style="width: 20%; float: right;"><?php echo $row_list['sub_lecture_count'];?>集</span><img src="img/series.png" style="vertical-align: top;width: 24px; float: right;">
+                                    <span style="width: 20%; float: right;margin: 2px 5px"><?php echo $row_list['sub_follow_count'];?></span><img src="img/reciever.png" style="vertical-align: top;width: 24px; float: right;">
                             </p> 
                         
                     </div>
@@ -111,7 +111,7 @@ function subject_del(del_id) {
           });
      }else{
          console.log("取消");
-     }log
+     }
     
 }
 

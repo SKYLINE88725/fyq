@@ -22,6 +22,8 @@ if ($result_cate = mysqli_query($mysqli,$query_cate)) {
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title><?php echo $row['sub_title'];?></title>
 <link href="css/style.css" rel="stylesheet" type="text/css" />
+<link href="/css/mui.min.css" rel="stylesheet"/>
+<link rel="stylesheet" href="/css/mui.css" />
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script>
 function follow_id(fid) {
@@ -62,14 +64,14 @@ function follow_id(fid) {
 <img src="<?php echo $row['cl_logo'];?>" style="width: 100%;height: 100px;filter: blur(2px);top:48px;position: absolute;">
 <div style="position: relative;margin-top: 80px;">
 	<img src="<?php echo $row['sub_picture'];?>" style="width: 100px;box-shadow: 0px 0px 15px 3px rgba(0,0,0,.3);border: solid white 2px;float: left;margin: 18px 20px">
-	<div style="padding: 15px; color: white">
-		<p><?php echo $row['cl_name'];?></p>
-		<p style="white-space: nowrap;text-overflow: ellipsis;overflow: hidden;"><?php echo $row['cl_province'];?> <?php echo $row['cl_city'];?> <?php echo $row['cl_area'];?></p>
+	<div style="padding-top: 15px;">
+		<p style="padding: 0px;color: white;font-size: 18px; margin: 3px;"><?php echo $row['cl_name'];?></p>
+		<p style="white-space: nowrap;text-overflow: ellipsis;overflow: hidden;padding: 0px;font-size: 15px;color: white;margin: 3px;"><?php echo $row['cl_province'];?> <?php echo $row['cl_city'];?> <?php echo $row['cl_area'];?></p>
 	</div>
 	<div style="color: #333">
-		<p class="businesses_blog_list_cate">
-            <img src="img/series.png" style="vertical-align: text-top;width: 24px;"><span style="margin: 0px 5px"><?php echo $row['sub_lecture_count'];?>集</span>
-			<span style="float: right;padding: 0px 6px;background-color: #ff655e;color: white;border-radius: 3px;margin-right: 10px"><?php echo $row_cate['ic_name'];?></span>
+		<p class="businesses_blog_list_cate" style="margin-bottom: auto;">
+            <img src="img/series.png" style="vertical-align: middle;width: 22px;"><span style="margin: 0px 5px"><?php echo $row['sub_lecture_count'];?>集</span>
+			<span style="float: right;padding: 0px 5px;background-color: #ff655e;color: white;border-radius: 3px;margin-right: 10px;margin-top: 6px;line-height: 1.7;"><?php echo $row_cate['ic_name'];?></span>
 		</p>
 		<p><img src="img/reciever.png" style="vertical-align: top;width: 24px;"><span style="width: 20%; margin: 2px 5px"><?php echo $row['sub_follow_count'];?></span></p>
 	</div>
@@ -103,12 +105,17 @@ function follow_id(fid) {
 				$row_cate = mysqli_fetch_assoc($result_cate);
 			}
 ?>
-		<div class="businesses_blog_list" style="margin: 10px; padding: 10px;background-color: white;color: #333">
+		<div class="mui-card" style="margin: 10px; padding: 10px;background-color: white;color: #333" id="commodity_<?php echo $row_list['tl_id'];?>">
 		    <a class="mui-card-content"  href="detailed_view.php?view=<?php echo $row_list['tl_id'];?>&type=company" target="_self">
 		    	<p class="businesses_blog_list_title mui-h4"><?php echo $row_list['tl_name'];?></p>
 		    	<p class="businesses_blog_list_title mui-h5"><?php echo $row_list['tl_summary'];?></p>
 		    	<p class="businesses_blog_list_title mui-h5"><img src="img/reciever.png" style="vertical-align: top;width: 24px;"><span style="width: 20%; margin: 2px 5px"><?php echo $row['sub_follow_count'];?></span><span><img id="follow_<?php echo $row_list['tl_id'];?>" onClick="follow_id('<?php echo $row_list['tl_id'];?>')" src="<?php echo $follow_img;?>" alt="" style="width: 20px;float: right;"></span></p>
 		    </a>
+		    <div class="clearfix"></div>
+		    <div class="mui-pull-right businesses_blog_list_cate">
+                <!-- <div class="mui-btn mui-btn-primary"><a style="color: #FFFFFF;" href="my_commodity_alter.php?id=<?php echo $row_list['tl_id'];?>">修改</a></div> -->
+                <div class="mui-btn" onClick="lecture_del('<?php echo $row_list['tl_id'];?>')">删除</div>
+            </div>
 		</div>
 
 <?php 
@@ -117,7 +124,25 @@ function follow_id(fid) {
 ?>
 
 
-
+<script type="text/javascript">
+	function lecture_del(del_id) {
+     if(confirm("确定?")){
+        $.post("post/commodity_del.php",
+          {
+            commoditydel_id:del_id
+          },
+          function(data,status){
+            if (data) {
+                alert("删除成功！");
+                $("#commodity_"+del_id).remove();
+            }
+          });
+     }else{
+         console.log("取消");
+     }
+    
+}
+</script>
 
 </body>
 </html>

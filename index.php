@@ -295,11 +295,6 @@ include( "include/head_.php" );
     }
 </style>
 
-<link href="https://vjs.zencdn.net/7.2.4/video-js.css" rel="stylesheet">
-<script src="https://vjs.zencdn.net/7.2.4/video.js"></script>
-<link href="./videoplayer/css/videoplayer.css" rel="stylesheet">
-
-
 <img src="../img/banner/banner-bg.png" style="position:fixed; top:40px; z-index: -10; width: 100%">
 <div style="padding: 0px" class="mui-bar mui-bar-nav header_slave">
 <?php

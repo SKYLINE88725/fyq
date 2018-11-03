@@ -50,24 +50,20 @@ include("include/top_navigate_commodity.php");
 <script src="fuyuanquan/assets/vendor/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 <script src="fuyuanquan/assets/scripts/klorofil-common.js"></script>
 <script src="fuyuanquan/assets/vendor/bootstrap/js/bootstrap.min.js"></script>
-<!-- <script type="text/javascript" src="fuyuanquan/diyUpload/js/webuploader.html5only.min.js"></script>
-<script type="text/javascript" src="fuyuanquan/diyUpload/js/diyUpload.js"></script> -->
-<!-- <script type="text/javascript" src="fuyuanquan/js/thumbnail_picture.js"></script> -->
 <script type="text/javascript" src="umeditor/third-party/template.min.js?t=<?php echo time();?>"></script>
-<!-- <script type="text/javascript" charset="utf-8" src="umeditor/umeditor.config.js?t=<?php echo time();?>"></script>
-<script type="text/javascript" charset="utf-8" src="umeditor/umeditor.js?t=<?php echo time();?>"></script>
-<script type="text/javascript" src="umeditor/lang/zh-cn/zh-cn.js?t=<?php echo time();?>"></script> -->
 <!-- <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=vmmlFR9V8hDzNoPgpGOh8NwGpfjqaGDE"></script> -->
 <script src="fuyuanquan/js/distpicker.data.js"></script>
 <script src="fuyuanquan/js/distpicker.js"></script>
 <link rel="stylesheet" href="fuyuanquan/assets/vendor/bootstrap/css/bootstrap.min.css">
+
+<!-- plupload file production -->
+<script type="text/javascript" src="./js/plupload.full.min.js"></script>
 <!-- ICONS -->
 <link rel="apple-touch-icon" sizes="76x76" href="fuyuanquan/assets/img/apple-icon.png">
 <link rel="icon" type="image/png" sizes="96x96" href="fuyuanquan/assets/img/favicon.png">
 <link rel="stylesheet" type="text/css" href="fuyuanquan/diyUpload/css/webuploader.css">
 <link rel="stylesheet" type="text/css" href="fuyuanquan/diyUpload/css/diyUpload.css">
 <link rel="stylesheet" href="fuyuanquan/assets/css/main.css">
-<!-- <link href="../umeditor/themes/default/css/umeditor.css?t=<?php echo time();?>" type="text/css" rel="stylesheet"> -->
 <link rel="stylesheet" type="text/css" href="fuyuanquan/diyUpload/css/globle.css">
 <style type="text/css">
     .merchant_entry {
@@ -181,7 +177,7 @@ include("include/top_navigate_commodity.php");
 		<ul>
         	<li>
                 <div class="input-group" style="float: left; margin-left: 10px; width: 90%; margin-top:10px;">
-                    <label class="shanggpin_label input-group-addon">讲课标题</label>
+                    <label class="shanggpin_label input-group-addon">专辑标题</label>
                     <input type="text" class="form-control" placeholder="请输入讲课标题" name="commodity_title" >
                 </div>
                 
@@ -198,22 +194,23 @@ include("include/top_navigate_commodity.php");
 			</li>
             <li>
                 <div class="input-group" style="float: left; margin-left: 10px; width: 90%; margin-top:10px;">
-                    <div style="font-weight: bold; margin-bottom: 5px;">讲课内容</div>
-                    <textarea class="form-control" placeholder="请输入讲课内容" rows="4" name="commodity_summary" ></textarea>
+                    <div style="font-weight: bold; margin-bottom: 5px;">专辑内容</div>
+                    <textarea class="form-control" placeholder="请输入专辑内容" rows="4" name="commodity_summary" ></textarea>
                 </div>            
 
-			</li>            
-			<li>
-				<div style="float: left; margin-left:10px; width: 90%; margin-top:10px;">
-					<label id="spic" class="mui-btn mui-btn-primary">选择讲课头像</label>
-                    <p style="font-size: 1.0em;float: right;"><font color="#FF0000">只能上传1张图片</font></p>
-					<input type="file" name="file1" class="inputfile" style="display:none;">
-					<div id="feedback" style="float: left; width: 100%;margin-top: 20px;"></div>
-                    <span id="lfile" style="display:none;position: absolute;background-color: #FFFFFF"></span>					
+			</li>
+            <li>
+				<div id="filelist">Your browser doesn't have Flash, Silverlight or HTML5 support.</div>
+			</li>
+			<li>				
+				<div id="container">
+					<a id="pickfiles" class="mui-btn mui-btn-primary" href="javascript:;">选择文本文件</a> 
+					<a id="uploadfiles" class="mui-btn mui-btn-primary" href="javascript:;">上载</a>
+					<!-- <pre id="console"></pre> -->
 				</div>
 			</li>
 			<li>
-			
+				<div id="feedback" style="float: left; width: 100%;margin-top: 20px;"></div>
 			</li>
             <!--<li>
             	<div style=" text-align:center;">
@@ -225,6 +222,7 @@ include("include/top_navigate_commodity.php");
     <script type="text/javascript" src="fuyuanquan/diyUpload/js/webuploader.min.js"></script>
     <script type="text/javascript" src="fuyuanquan/diyUpload/js/diyUpload_.js"></script>
 	<script type="text/javascript">
+		var last_uploaded_file = {}
 		$( ".commodity_in_pic span" ).click( function () {
 			$( this ).parent().remove();
 		} )
@@ -252,14 +250,12 @@ include("include/top_navigate_commodity.php");
 			var commodity_content = $( ".edui-body-container" ).html();
 			var commodity_mainimg = $( "#feedback img" ).attr( "src" );
 			var commodity_index = $("[name='commodity_index']").val();
-			var shop_img = $( "[name='file1']" ).val();
 			
-
-			if ( !commodity_title || !commodity_summary || !shop_img) {
+			if ( !commodity_title || !commodity_summary) {
 				var msgstr = "内容填写不完整!";
 				if(!commodity_title)
 				{
-					alert('请填写活动标题！');	
+					alert('请填写专辑标题！');	
 					return false;
 				}
 				if(!commodity_summary)
@@ -267,23 +263,13 @@ include("include/top_navigate_commodity.php");
 					alert('请填写活动内容！');	
 					return false;
 				}
-				if(!shop_img)
-				{
-					alert('请上传店铺图片！');
-					return false;
-				}
 			}
 			else 
 			{
-				mediaUrl = getMediaSrcUrl();
-				if (!recoredCompleted()){
-					alert('请记录。');	
-					//return false;
+				if (!last_uploaded_file || jQuery.isEmptyObject(last_uploaded_file)){
+					alert("화일을 업로드 하세요.");
+					return;
 				}
-				else{					
-					$('#upload-to-server').click();
-				}
-
 				$( this ).attr( "disabled", "disabled" ).text( "提交中..." ).prepend( '<i class="fa fa-spinner fa-spin"></i>' );
 				$.post( "post/commodity_add_post.php", {
 						com_title: commodity_title,
@@ -304,7 +290,8 @@ include("include/top_navigate_commodity.php");
 						com_mainimg: commodity_mainimg,
 						com_index:commodity_index,
 						com_shopmenu: "<?php echo $sort;?>",
-						media_filename: mediaUrl,
+						media_filename: last_uploaded_file.filename,
+						media_filetitle: last_uploaded_file.filetitle,
                         sub_id: "<?php echo $sub_id;?>"
 					},
 					function ( data, status ) {						
@@ -327,6 +314,76 @@ include("include/top_navigate_commodity.php");
 				district:'<?php echo $row_member['mb_area'];?>'
 			});
 	</script>
+	
+	<script type="text/javascript">
+	// Custom example logic
+
+	var uploader = new plupload.Uploader({
+		runtimes : 'html5,flash,silverlight,html4',
+		browse_button : 'pickfiles', // you can pass an id...
+		container: document.getElementById('container'), // ... or DOM Element itself
+		url : 'upload_file.php',
+		flash_swf_url : '../js/Moxie.swf',
+		silverlight_xap_url : '../js/Moxie.xap',
+		multi_selection: false,
+		filters : {
+			max_file_size : '500mb',
+			mime_types: [
+				// {title : "Image files", extensions : "jpg,gif,png"},
+				{title : "Video files", extensions : "mp4"},
+				{title : "Audio files", extensions : "mp3"},
+				//{title : "Zip files", extensions : "zip"}
+			]
+		},
+
+		init: {
+			PostInit: function() {
+				document.getElementById('filelist').innerHTML = '';
+
+				document.getElementById('uploadfiles').onclick = function() {
+					last_uploaded_file = {};
+					uploader.start();
+					return false;
+				};
+			},
+
+			FilesAdded: function(up, files) {
+				plupload.each(files, function(file) {
+					//document.getElementById('filelist').innerHTML += '<div id="' + file.id + '">' + file.name + ' (' + plupload.formatSize(file.size) + ') <b></b></div>';
+					document.getElementById('filelist').innerHTML = '<div id="' + file.id + '">' + file.name + ' (' + plupload.formatSize(file.size) + ') <b></b></div>';
+				});
+			},
+
+			UploadProgress: function(up, file) {
+				document.getElementById(file.id).getElementsByTagName('b')[0].innerHTML = '<span>' + file.percent + "%</span>";
+			},
+
+			Error: function(up, err) {
+				document.getElementById('console').appendChild(document.createTextNode("\nError #" + err.code + ": " + err.message));
+			},
+			QueueChanged: function(up){
+				if (up.files.length >= 2)
+					up.files.splice(0, up.files.length-1);
+				var f = up.files;
+			},
+			FileUploaded: function(up, file, result){
+				if (result['status'] == 200){
+					var obj = JSON.parse(result.response);
+					last_uploaded_file = {
+						"filename": obj.filename,
+						"filetitle": file.name
+					};
+					
+				}
+			}
+			
+		}
+	});
+
+	uploader.init();
+
+	</script>
+
     <script type="text/javascript">
  //响应返回数据容器
  		$( document ).ready(function(){

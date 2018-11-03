@@ -1,7 +1,7 @@
 <?php 
 include( "../db_config.php" );
 if ( !$member_login ) {
-	echo "<script> alert('ÇëÏÈµÇÂ½ÕÊºÅ');parent.location.href='index.php'; </script>";
+	echo "<script> alert('è¯·å…ˆç™»é™†å¸å·');parent.location.href='index.php'; </script>";
 	exit;
 }
 $com_title = $_POST["com_title"];
@@ -27,7 +27,7 @@ $com_distribution_level = $_POST["com_distribution_level"];
 $com_class = $_POST["com_class"];
 $com_phone = $_POST["com_phone"];
 $com_pushmsg = $_POST["com_pushmsg"];
-$com_pushmsg = str_replace("£¬",",",$com_pushmsg);
+$com_pushmsg = str_replace("Â£Â¬",",",$com_pushmsg);
 $com_summary = $_POST["com_summary"];
 $com_content = $_POST["com_content"];
 $com_parentFileBox = $_POST["com_parentFileBox"];
