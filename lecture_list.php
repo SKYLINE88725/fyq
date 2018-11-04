@@ -73,7 +73,7 @@ function follow_id(fid) {
             <img src="img/series.png" style="vertical-align: middle;width: 22px;"><span style="margin: 0px 5px"><?php echo $row['sub_lecture_count'];?>集</span>
 			<span style="float: right;padding: 0px 5px;background-color: #ff655e;color: white;border-radius: 3px;margin-right: 10px;margin-top: 6px;line-height: 1.7;"><?php echo $row_cate['ic_name'];?></span>
 		</p>
-		<p><img src="img/reciever.png" style="vertical-align: top;width: 24px;"><span style="width: 20%; margin: 2px 5px"><?php echo $row['sub_follow_count'];?></span></p>
+		<p><img src="img/reciever.png" style="vertical-align: top;width: 24px;"><span style="width: 20%; margin: 2px 5px"><?php echo $row['sub_play_cnt'];?></span></p>
 	</div>
 </div>
 <div class="clearfix"></div>
@@ -109,7 +109,7 @@ function follow_id(fid) {
 		    <a class="mui-card-content"  href="detailed_view.php?view=<?php echo $row_list['tl_id'];?>&type=company" target="_self">
 		    	<p class="businesses_blog_list_title mui-h4"><?php echo $row_list['tl_name'];?></p>
 		    	<p class="businesses_blog_list_title mui-h5"><?php echo $row_list['tl_summary'];?></p>
-		    	<p class="businesses_blog_list_title mui-h5"><img src="img/reciever.png" style="vertical-align: top;width: 24px;"><span style="width: 20%; margin: 2px 5px"><?php echo $row['sub_follow_count'];?></span><span><img id="follow_<?php echo $row_list['tl_id'];?>" onClick="follow_id('<?php echo $row_list['tl_id'];?>')" src="<?php echo $follow_img;?>" alt="" style="width: 20px;float: right;"></span></p>
+		    	<p class="businesses_blog_list_title mui-h5"><img src="img/reciever.png" style="vertical-align: top;width: 24px;"><span style="width: 20%; margin: 2px 5px"><?php echo $row_list['tl_Sales'];?></span><span><img id="follow_<?php echo $row_list['tl_id'];?>" onClick="follow_id('<?php echo $row_list['tl_id'];?>')" src="<?php echo $follow_img;?>" alt="" style="width: 20px;float: right;"></span></p>
 		    </a>
 		    <div class="clearfix"></div>
 		    <div class="mui-pull-right businesses_blog_list_cate">

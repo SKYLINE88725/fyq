@@ -98,7 +98,7 @@ if (strstr($_SERVER['HTTP_USER_AGENT'],"fuyuanquan.net")) {
 echo "<script> var tid=".$tid;
 echo "</script>"
 ?>
-<div class="top_navigate"> 
+<div class="top_navigate" style="background-color: rgba(0,0,0,0);"> 
 	<span>
 		<?php echo $top_navigate_return;?>
 	</span> 
@@ -205,6 +205,8 @@ echo "</script>"
     background-size: contain;
     width: 100%;
     height: 123.33333333333333vw;
+    margin-bottom: 100px;
+    border-bottom: solid 10px #6f6a6a;
 }
 
 .div6 {
@@ -234,9 +236,7 @@ echo "</script>"
 		if ($row['shop_menu'] == "partner") {
 		?>
 		<div class="tc_detailed_foot">
-		<button class="div6" >
-		<li class="item_buy"></li>
-		</button>
+			<div class="div6" ></div>
 		</div>
 <?php
 		}
@@ -418,7 +418,7 @@ if ($type == "company") {
 		// $( ".tc_comtent_more p" ).click( function () {
 			
 		// } )
-		$(".tc_detailed_foot .item_buy").click(function () {
+		$(".div6").click(function () {
 			<?php 
 		if ($type == "join") {
 		?>

@@ -96,11 +96,11 @@ if (strstr($agent_user,"MicroMessenger")){
 		$json = json_decode($content);
 		$openid = $json->{'openid'};
 		if ($view) {
-			$url_code = urlencode("http://fyq.shengtai114.com/detailed_view.php?qid=$qid&view=$view&type=$type");
+			$url_code = urlencode("../detailed_view.php?qid=$qid&view=$view&type=$type");
 		} else {
-			$url_code = urlencode("http://fyq.shengtai114.com/");
+			$url_code = urlencode("../");
 		}
-		header("Location: http://fyq.shengtai114.com/recommend_reg.php?openid=$openid&qid=$qid&return_url=$url_code");
+		header("Location: ../recommend_reg.php?openid=$openid&qid=$qid&return_url=$url_code");
 		exit;
 	}
 }

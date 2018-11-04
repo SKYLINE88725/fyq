@@ -79,7 +79,7 @@ include("include/top_navigate_commodity.php");
                             <p class="businesses_blog_list_cate" style="width: 100%">
                                     <span style="width: 20%;padding: 6px;background-color: #ff655e"><?php echo $row_cate['ic_name'];?></span>
                                     <span style="width: 20%; float: right;"><?php echo $row_list['sub_lecture_count'];?>集</span><img src="img/series.png" style="vertical-align: top;width: 24px; float: right;">
-                                    <span style="width: 20%; float: right;margin: 2px 5px"><?php echo $row_list['sub_follow_count'];?></span><img src="img/reciever.png" style="vertical-align: top;width: 24px; float: right;">
+                                    <span style="width: 20%; float: right;margin: 2px 5px"><?php echo $row_list['sub_play_cnt'];?></span><img src="img/reciever.png" style="vertical-align: top;width: 24px; float: right;">
                             </p> 
                         
                     </div>

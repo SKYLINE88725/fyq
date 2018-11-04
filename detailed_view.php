@@ -7,18 +7,18 @@ if (isset($_COOKIE["member"])) {
 } else {
     $member_login = '';
 }
-//echo $member_login;
-include("include/shipping_address.php");
-$receive_address = mb_exist_shipping($member_login, $mysqli);
 
-$mb_id = $receive_address['mb_id'];
-$query = "SELECT * FROM `shipping address` where `mb_id` = $mb_id AND `status` = 1";
+// include("include/shipping_address.php");
+// $receive_address = mb_exist_shipping($member_login, $mysqli);
 
-$result = mysqli_query($mysqli, $query);
-$row_data = mysqli_fetch_assoc($result);
-$mb_receiving_address = $row_data['mb_receiving_address'];
-$mb_shipping_id = $row_data['id'];
-// $data['status'] = $row_data['status'];
+// $mb_id = $receive_address['mb_id'];
+// $query = "SELECT * FROM `shipping address` where `mb_id` = $mb_id AND `status` = 1";
+
+// $result = mysqli_query($mysqli, $query);
+// $row_data = mysqli_fetch_assoc($result);
+// $mb_receiving_address = $row_data['mb_receiving_address'];
+// $mb_shipping_id = $row_data['id'];
+
 
 $member_view = member_db($member_login,"mb_id,mb_point,mb_ico","include/data_base.php");
 $member_view = json_decode($member_view, true);
@@ -106,9 +106,8 @@ echo "</script>"
 		display: block;
 	}
 </style>
-<link href="https://vjs.zencdn.net/7.2.4/video-js.css" rel="stylesheet">
-<script src="https://vjs.zencdn.net/7.2.4/video.js"></script>
-<link href="./videoplayer/css/videoplayer.css" rel="stylesheet">
+<link href="http://vjs.zencdn.net/7.0/video-js.min.css" rel="stylesheet">
+<script src="http://vjs.zencdn.net/7.0/video.min.js"></script>
 
 <div class="top_navigate"> 
 	<span>
@@ -163,11 +162,12 @@ echo "</script>"
 		</li>
 		<li>
 			<p>
-				<?php $mediaSrc= $row['tl_video'];?>
-				<video id="my-player" controls playsinline class="video-js <?php $l=explode(".", $row['tl_video']); echo end($l) !== "mp4" ? "hide":"show"; ?>" >
-					<source src="<?php echo 'videoplayer/playsong.php?filename='.$row['tl_video'] ?>">
-                </video>
-				<audio class="<<?php $l=explode(".", $row['tl_video']); echo end($l) !== "mp4" ? "show":"hide"; ?>>" controls>					
+				<div>
+				<video id="home_video" controls playsinline autoplay class="video-js vjs-default-skin <?php $l=explode(".", $row['tl_video']); echo end($l) !== "mp4" ? "hide":"show"; ?>" data-setup="{}">
+					<source src="<?php echo 'videoplayer/playsong.php?filename='.$row['tl_video'] ?>" type="video/mp4">
+				</video>
+				</div>
+				<audio class="<?php $l=explode(".", $row['tl_video']); echo end($l) !== "mp4" ? "show":"hide"; ?>" controls>					
 					<source src="<?php echo 'videoplayer/playsong.php?filename='.$row['tl_video'] ?>">
 				</audio>
 			</p>
@@ -248,11 +248,8 @@ if ($row['tl_summary']){
 <?php
 }
 ?>
-	<div class="tc_detailed_content">
-		
-	</div>
 
-<div class="tc_detailed_foot" style="z-index: 100;">
+<!-- <div class="tc_detailed_foot" style="z-index: 100;">
 	<ul>
 		<li>
             <?php if($member_login && $row["mb_nick"]): ?>
@@ -323,9 +320,9 @@ if ($row['tl_summary']){
 
 
 
-</div>
+</div> -->
 
-<div class="tc_detailed_confirm">
+<!-- <div class="tc_detailed_confirm">
 	<ul>
 		<li class="tc_detailed_confirm_view">
 			<div> <img src="<?php echo $row['tc_mainimg'];?>" alt=""> </div>
@@ -381,7 +378,7 @@ if ($type == "company") {
 		<?php 
 }
 ?>
-		<!-- <li class="tc_detailed_line4" id="shipping_address" style="background-color: white;margin-bottom: 20px;margin-top: 20px;">
+		<li class="tc_detailed_line4" id="shipping_address" style="background-color: white;margin-bottom: 20px;margin-top: 20px;">
 			<?php 
 				if($member_login){
 			?>
@@ -393,10 +390,10 @@ if ($type == "company") {
 			</a>
 			<?php
 			}?>
-		</li> -->
+		</li>
 		<li class="tc_detailed_confirm_confirm"> 确定 </li>
 	</ul>
-</div>
+</div> -->
 <div class="tc_detailed_bg"></div>
 <?php
 if($member_login && $row["mb_nick"]):
@@ -421,7 +418,7 @@ if($member_login && $row["mb_nick"]):
     <?php
 endif;
 ?>
-<div class="view_qrcode">
+<!-- <div class="view_qrcode">
 	<ul>
 		<li>
 			<img src="<?php echo $row['tc_mainimg'];?>" alt="">
@@ -465,35 +462,49 @@ endif;
 		</li>
 		<li>截屏保存分享给您的朋友</li>
 	</ul>
-</div>
+</div> -->
 
 <script type="text/javascript">
-        var mb_id = "<?php echo $mb_id;?>";
-	var shipping_id = "<?php echo $mb_shipping_id;?>";
+    //     var mb_id = "<?php echo $mb_id;?>";
+	// var shipping_id = "<?php echo $mb_shipping_id;?>";
 
 
 	$( document ).ready( function () {
-		if ( mb_id ) {
-			$.ajax({
-				type: 'POST',
-				url: "/include/shipping_address.php?action=getting_default_shipping_address",
-				data: { 
-					mb_id: mb_id,
-				},
-				headers: {"Content-Type":"application/x-www-form-urlencoded; charset=UTF-8"},
-				success: function(response) {
-					var mb_ship_province = JSON.parse(response).mb_ship_province ? JSON.parse(response).mb_ship_province + ', ' : "";
-					var mb_ship_city = JSON.parse(response).mb_ship_city ? JSON.parse(response).mb_ship_city + ', ' : "";
-					var mb_ship_district = JSON.parse(response).mb_ship_district ? JSON.parse(response).mb_ship_district + ', ' : "";
-					var mb_receiving_address = JSON.parse(response).mb_receiving_address ? JSON.parse(response).mb_receiving_address : "";
+		$.ajax({
+			type: 'POST',
+			url: "/post/play_inc_post.php",
+			data:{
+				tl_id: <?php echo $row['tl_id'];?>,
+				sub_id: <?php echo $row['sub_id'];?>,
+			},
+			headers: {"Content-Type":"application/x-www-form-urlencoded; charset=UTF-8"},
+			success: function(response) {
+			},
+			error: function (request, error){
+
+			}
+		});
+		// if ( mb_id ) {
+		// 	$.ajax({
+		// 		type: 'POST',
+		// 		url: "/include/shipping_address.php?action=getting_default_shipping_address",
+		// 		data: { 
+		// 			mb_id: mb_id,
+		// 		},
+		// 		headers: {"Content-Type":"application/x-www-form-urlencoded; charset=UTF-8"},
+		// 		success: function(response) {
+		// 			var mb_ship_province = JSON.parse(response).mb_ship_province ? JSON.parse(response).mb_ship_province + ', ' : "";
+		// 			var mb_ship_city = JSON.parse(response).mb_ship_city ? JSON.parse(response).mb_ship_city + ', ' : "";
+		// 			var mb_ship_district = JSON.parse(response).mb_ship_district ? JSON.parse(response).mb_ship_district + ', ' : "";
+		// 			var mb_receiving_address = JSON.parse(response).mb_receiving_address ? JSON.parse(response).mb_receiving_address : "";
 					
-					$.trim($('.tc_detailed_line4 a:nth-child(2) p').text(mb_ship_province + mb_ship_city + mb_ship_district + mb_receiving_address));
-				},
-				error: function (request, error) {
-			        alert(" 不能这样做因为: " + error);
-			    },
-			});
-		}
+		// 			$.trim($('.tc_detailed_line4 a:nth-child(2) p').text(mb_ship_province + mb_ship_city + mb_ship_district + mb_receiving_address));
+		// 		},
+		// 		error: function (request, error) {
+		// 	        alert(" 不能这样做因为: " + error);
+		// 	    },
+		// 	});
+		// }
 
         $('.viewqrcode').qrcode({
             text: "<?php echo $picUrl;?>"
@@ -515,43 +526,43 @@ endif;
 		// $( ".tc_comtent_more p" ).click( function () {
 			
 		// } )
-		$(".tc_detailed_foot .item_buy").click(function () {
-			<?php 
-		if ($type == "join") {
-		?>
-			$( ".tc_detailed_confirm_confirm" ).click();
-			<?php 
-		} else {
-		?>
-			$( ".tc_detailed_confirm, .tc_detailed_bg" ).css("display","block");
-			<?php 
-		}
-		?>
-		} )
+		// $(".tc_detailed_foot .item_buy").click(function () {
+		// 	<?php 
+		// if ($type == "join") {
+		// ?>
+		// 	$( ".tc_detailed_confirm_confirm" ).click();
+		// 	<?php 
+		// } else {
+		// ?>
+		// 	$( ".tc_detailed_confirm, .tc_detailed_bg" ).css("display","block");
+		// 	<?php 
+		// }
+		// ?>
+		// } )
 		
-		$( ".tc_detailed_off" ).click( function () {
-			$( ".tc_detailed_confirm, .tc_detailed_bg" ).css("display","none");
-		} )
+		// $( ".tc_detailed_off" ).click( function () {
+		// 	$( ".tc_detailed_confirm, .tc_detailed_bg" ).css("display","none");
+		// } )
 
-		$( ".businesses_detailed_jian" ).click( function () {
-			var businesses_detailed_val = $( "[name='businesses_detailed_count']" ).val();
-			if ( parseInt( businesses_detailed_val ) > 1 ) {
-				$( "[name='businesses_detailed_count']" ).val( parseInt( businesses_detailed_val ) - 1 );
-			}
-		} )
-		$( ".businesses_detailed_jia" ).click( function () {
-			var businesses_detailed_val = $( "[name='businesses_detailed_count']" ).val();
-			if ( parseInt( businesses_detailed_val ) > 0 ) {
-				$( "[name='businesses_detailed_count']" ).val( parseInt( businesses_detailed_val ) + 1 );
-			}
-		} )
+		// $( ".businesses_detailed_jian" ).click( function () {
+		// 	var businesses_detailed_val = $( "[name='businesses_detailed_count']" ).val();
+		// 	if ( parseInt( businesses_detailed_val ) > 1 ) {
+		// 		$( "[name='businesses_detailed_count']" ).val( parseInt( businesses_detailed_val ) - 1 );
+		// 	}
+		// } )
+		// $( ".businesses_detailed_jia" ).click( function () {
+		// 	var businesses_detailed_val = $( "[name='businesses_detailed_count']" ).val();
+		// 	if ( parseInt( businesses_detailed_val ) > 0 ) {
+		// 		$( "[name='businesses_detailed_count']" ).val( parseInt( businesses_detailed_val ) + 1 );
+		// 	}
+		// } )
 
-		$( ".top_navigate .tc_qrcode" ).click( function () {
-			$( ".view_qrcode, .tc_detailed_bg" ).css( "display", "block" );
-		} )
-		$( ".tc_detailed_bg" ).click( function () {
-				$( ".view_qrcode, .tc_detailed_bg, #chatContainer").css( "display", "none" );
-			} )
+		// $( ".top_navigate .tc_qrcode" ).click( function () {
+		// 	$( ".view_qrcode, .tc_detailed_bg" ).css( "display", "block" );
+		// } )
+		// $( ".tc_detailed_bg" ).click( function () {
+		// 		$( ".view_qrcode, .tc_detailed_bg, #chatContainer").css( "display", "none" );
+		// 	} )
 		$( ".tc_point_commodity" ).click( function () {
 			var tc_point_commodity_selected = $( ".tc_point_commodity" ).is( '.point_selected' );
 			if ( tc_point_commodity_selected ) {
@@ -584,16 +595,20 @@ endif;
 				
 			}
 		});
-		var player = videojs('my-player', options, function onPlayerReady() {
-			videojs.log('Your player is ready!');
+		videojs("home_video", {"height":"auto", "width":"auto"}).ready(function(){
+			var myPlayer = this;    // Store the video object
+			var aspectRatio = 9/16; // Make up an aspect ratio
 
-			// In this context, `this` is the player that was created by Video.js.
-			this.play();
+			function resizeVideoJS(){
+			// Get the parent element's actual width
+			var width = document.getElementById(myPlayer.id()).parentElement.offsetWidth;
+			// Set width to fill parent element, Set height
+			myPlayer.width(width);
+			myPlayer.height( width * aspectRatio );
+			}
 
-			// How about an event listener?
-			this.on('ended', function() {
-				videojs.log('Awww...over so soon?!');
-			});
+			resizeVideoJS(); // Initialize the function
+			window.onresize = resizeVideoJS; // Call the function on resize
 		});
 	});
 
@@ -622,25 +637,25 @@ endif;
 		return false;
 	}
 
-	function check_shipping_address(url) {
-		var shipping_address = $.trim($('.tc_detailed_line4 a:nth-child(2) p.point_1').text());
-		if(mb_id){
-			if(shipping_address){
-				window.open( url + '&shipping_address=' + shipping_address ,'_self')	
-			} else {
-				alert("请您先设定收货地址一下。");
-				window.location = "/member_shipping_address.php?from_detail=1&detail_item=<?php echo $_GET['view']; ?>&detail_type=<?php echo $_GET['type']; ?>";
-			}
-		} else {
-			$.get("post/login_ajax.php",function(data,status){
-				$(".animsition").html(data);
-			});
-		}
+	// function check_shipping_address(url) {
+	// 	var shipping_address = $.trim($('.tc_detailed_line4 a:nth-child(2) p.point_1').text());
+	// 	if(mb_id){
+	// 		if(shipping_address){
+	// 			window.open( url + '&shipping_address=' + shipping_address ,'_self')	
+	// 		} else {
+	// 			alert("请您先设定收货地址一下。");
+	// 			window.location = "/member_shipping_address.php?from_detail=1&detail_item=<?php echo $_GET['view']; ?>&detail_type=<?php echo $_GET['type']; ?>";
+	// 		}
+	// 	} else {
+	// 		$.get("post/login_ajax.php",function(data,status){
+	// 			$(".animsition").html(data);
+	// 		});
+	// 	}
 			
-	}
+	// }
 
 </script>
-<script type="text/javascript">
+<!-- <script type="text/javascript">
         $(".tc_detailed_confirm_confirm, .tc_detailed_foot .item_point").click(function(){ 
 		var shipping_address = "shipping_address";//$.trim($('.tc_detailed_line4 a:nth-child(2) p.point_2').text());
 		if ( mb_id ) {
@@ -697,7 +712,7 @@ endif;
 			});
 		}
 	});
-</script>
+</script> -->
 <?php 
 $endlat = $row['GPS_Y'];
 $endlon = $row['GPS_X'];

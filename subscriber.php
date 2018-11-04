@@ -17,6 +17,9 @@ $query = "SELECT * FROM teacher_list where shop_menu='partner' and tl_class='0' 
 			{	
 		?>
 		<li>
+			<!-- <p><a class="animsition-link" href="payment.php?tradeno="+ 1 target="_self"><img style="width: 100%" src="<?php echo $row['tc_mainimg'];?>" alt="<?php echo $row['tl_name'];?>"></a>
+			</p> -->
+
 			<p><a class="animsition-link" href="detailed_view.php?view=<?php echo $row['tl_id'];?>&type=join" target="_self"><img style="width: 100%" src="<?php echo $row['tc_mainimg'];?>" alt="<?php echo $row['tl_name'];?>"></a>
 			</p>
 		</li>
