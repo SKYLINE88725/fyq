@@ -2,7 +2,7 @@
 <div class="horizontal-list" id="horizontal_list_div">
 	<ul id="horizontal-list">
 		<li value="0" class="active" id="all"><a>推荐</a></li>
-		<li value="-1" id="vip" onclick="window.open('huiyuan.php?view=1895&type=join', '_self')"><a><img src="img/vip.png" style="width: 14px">VIP</a></li>
+		<li value="-1" id="vip" onclick="window.open('vip.php', '_self')"><a><img src="img/vip.png" style="width: 14px">VIP</a></li>
 		<!-- <li value="-1" id="vip" onclick="window.open('vip.php', '_self')"><a ><img src="img/vip.png"style="width: 20px">VIP</a></li> -->
 		<?php 
 		$query_cate = "SELECT * FROM item_cate where ic_type = 'teacher'";

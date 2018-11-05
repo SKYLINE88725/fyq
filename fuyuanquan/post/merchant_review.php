@@ -16,7 +16,7 @@ if ($result_college->num_rows == 0)
 	$result_merchant = mysqli_query($mysqli, $query_merchant);
 	$row = mysqli_fetch_assoc( $result_merchant );
 	
-	$sql_busines = mysqli_query($mysqli,"INSERT INTO college_list (cl_name, cl_province, cl_city, cl_area, cl_cate, cl_logo, cl_bg, cl_class, cl_admin, cl_phone, me_id) VALUES ('{$row['me_shop']}', '{$row['me_province']}', '{$row['me_city']}', '{$row['me_area']}', '10', '{$row['me_logo']}', '{$row['me_bg']}', 'busines', 'admin', '{$row['me_user']}', '{$mid}')");
+	$sql_busines = mysqli_query($mysqli,"INSERT INTO college_list (cl_name, cl_province, cl_city, cl_area, cl_cate, cl_logo, cl_bg, cl_class, cl_admin, cl_phone, me_id, GPS_X, GPS_Y) VALUES ('{$row['me_shop']}', '{$row['me_province']}', '{$row['me_city']}', '{$row['me_area']}', '10', '{$row['me_logo']}', '{$row['me_bg']}', 'busines', 'admin', '{$row['me_user']}', '{$mid}', '{$row['GPS_X']}', '{$row['GPS_Y']}')");
 }
 $sql_merchant = mysqli_query($mysqli,"UPDATE merchant_entry SET me_state = '1' WHERE me_id = '{$mid}'");
 if ($sql_merchant) {

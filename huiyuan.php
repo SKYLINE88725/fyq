@@ -87,12 +87,12 @@ if ($type == "join") {
 ?>
 <?php 
 if (strstr($_SERVER['HTTP_USER_AGENT'],"fuyuanquan.net")) {
-    $top_navigate_return = '<div onClick="YDB.GoBack()"><img src="/img/return_top.png" alt="返回"></div>';
+    $top_navigate_return = '<div onClick="window.history.back()"><img src="/img/return_top.png" alt="返回"></div>';
 } else {
     if (@$_SERVER["HTTP_REFERER"]) {
-        $top_navigate_return = '<a href="/" target="_self"><img src="/img/return_top.png" alt="返回"></a>';
+        $top_navigate_return = '<div onClick="window.history.back()"><img src="/img/return_top.png" alt="返回"></div>';
     } else {
-        $top_navigate_return = '<a href="/" target="_self"><img src="/img/return_top.png" alt="返回"></a>';
+        $top_navigate_return = '<div onClick="window.history.back()"><img src="/img/return_top.png" alt="返回"></div>';
     }
 }
 echo "<script> var tid=".$tid;
@@ -224,7 +224,7 @@ echo "</script>"
 </style>
 <div class="div1"></div>
 <div class="div2">
-    <video src="./video/hengchuan.mp4" controls="controls" width="100%">
+    <video src="./video/hengchuan.mp4" controls="controls" width="100%"  playsinline poster="./video/logo_huiyuan.png">
                 您的浏览器不支持 video 标签。
                 </video>
 </div>

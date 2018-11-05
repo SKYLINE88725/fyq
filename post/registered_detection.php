@@ -73,18 +73,18 @@ $phone_totalNumber = 1;
 				exit;
 			}
 		} else {
-			$query_agent_time = "SELECT * FROM fyq_member where mb_level > '4' and mb_level < '8' and (mb_province = '{$province1}' or mb_city = '{$city1}' or mb_area = '{$district1}') ORDER BY mb_agent_time limit 1";
-			if ($result_agent_time = mysqli_query($mysqli, $query_agent_time))
-			{
-				$row_agent_time = mysqli_fetch_assoc($result_agent_time);
-				if ($row_agent_time['mb_phone']) {
-					$recommend = $row_agent_time['mb_phone'];
-					$agent_time = time();
-					$sql_member_agent = mysqli_query($mysqli,"UPDATE fyq_member SET mb_agent_time = '{$agent_time}' WHERE mb_phone = '{$recommend}'");
-				} else {
+			// $query_agent_time = "SELECT * FROM fyq_member where mb_level > '4' and mb_level < '8' and (mb_province = '{$province1}' or mb_city = '{$city1}' or mb_area = '{$district1}') ORDER BY mb_agent_time limit 1";
+			// if ($result_agent_time = mysqli_query($mysqli, $query_agent_time))
+			// {
+			// 	$row_agent_time = mysqli_fetch_assoc($result_agent_time);
+			// 	if ($row_agent_time['mb_phone']) {
+			// 		$recommend = $row_agent_time['mb_phone'];
+			// 		$agent_time = time();
+			// 		$sql_member_agent = mysqli_query($mysqli,"UPDATE fyq_member SET mb_agent_time = '{$agent_time}' WHERE mb_phone = '{$recommend}'");
+			// 	} else {
 					$recommend = "13844338870";
-				}
-			}
+			// 	}
+			// }
 		}
 	} else {
 		$query_agent_time = "SELECT * FROM fyq_member where mb_id = '{$recommend}'";

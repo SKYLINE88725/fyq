@@ -8,8 +8,8 @@ include('include/vital_all.php');
 
 /** Virtual input data */
 
-	$out_trade_no = "201811010512111541063531559461";//$_POST['out_trade_no'];
-	$total_amount = 1000;//$_POST['total_amount'];
+	$out_trade_no = "201811050628551541370535893391";//$_POST['out_trade_no'];
+	$total_amount = 19.9;//$_POST['total_amount'];
 	//支付宝交易号
 	$trade_no = "123456789123456789";//$_POST['trade_no'];
 	//交易状态
@@ -41,8 +41,7 @@ if (!$member_id) {
     if ($result_notify = mysqli_query($mysqli, $query_notify))
     {
         $row_member = mysqli_fetch_assoc($result_notify);
-    }
-	
+    }	
 }
 
 /** Get Profit Rates */
@@ -76,6 +75,13 @@ if ($result = mysqli_query($mysqli, $queryAllSettings))
 			$rate_for_our_company = $row['ps_profit'];
 	}
 }
+
+/** 가입한사람에게 1년간의 유료회원자격을 준다. */
+$exp_date = new DateTime();
+$exp_date->setDate(date("Y")+1, date("m"), date("d"));
+//echo $dt->format('Y-m-d');
+$query_exp_date = "UPDATE fyq_member SET mb_exp_date = '{$exp_date->format('Y-m-d')}' WHERE mb_phone = {$row_member['mb_phone']};";
+$sql_exp_date = mysqli_query($mysqli, $query_exp_date);
 
 /* Recommend Member Chain  Test with 13591856103*/  
 // 모든 추천인들의 목록을 얻는다. => array_recommend_members
@@ -552,128 +558,140 @@ if ($result = mysqli_query($mysqli, $query))
 				}
 				/*代理部分 end*/
 
-				$query_dividends = "SELECT id FROM share_dividends where day_time = '{$day_time}'";
-				if ($result_dividends = mysqli_query($mysqli, $query_dividends))
-				{
-					$dividends_totalNumber = mysqli_num_rows($result_dividends);
-					if ($dividends_totalNumber) {
-						mysqli_query($mysqli," UPDATE share_dividends SET pay_amount = pay_amount+$total_amount, supply_price = supply_price+$supplyprice, a_bonus = a_bonus+$level_one_vip2, b_bonus = b_bonus+$level_two_vip2, c_bonus = c_bonus+$level_three_vip2, profit_price = profit_price+$pay_original WHERE day_time = '{$day_time}'");
-					} else {
-						mysqli_query($mysqli,"INSERT INTO share_dividends (pay_amount, supply_price, a_bonus, b_bonus, c_bonus, profit_price, day_time) VALUES ('{$total_amount}', '{$supplyprice}', '{$level_one_vip2}', '{$level_two_vip2}' ,'{$level_three_vip2}', '{$pay_original}', '{$day_time}')");
-					}
+				// 펀샹추천인에게 리익금 할당 - 1웬씩
+				for ($i=0; $i<count($array_recommend_members); $i++){
+					$who = $array_recommend_members[$i];
+					$howmuch = 1; // 1 Won
+					if ($i > 5 && !isTeacher($who))
+						continue;
+
+					$sql_pay_one = mysqli_query($mysqli," UPDATE fyq_member SET mb_commission_all = mb_commission_all+$howmuch, mb_commission_not_gold = mb_commission_not_gold+$howmuch, mb_commission_not_count = mb_commission_not_count+1 WHERE mb_phone = '{$who}'");
+					vital_member_plus($who,'0','0',$howmuch,'1','0','0','0','0',$payment_method);				
+					
 				}
+
+				// $query_dividends = "SELECT id FROM share_dividends where day_time = '{$day_time}'";
+				// if ($result_dividends = mysqli_query($mysqli, $query_dividends))
+				// {
+				// 	$dividends_totalNumber = mysqli_num_rows($result_dividends);
+				// 	if ($dividends_totalNumber) {
+				// 		mysqli_query($mysqli," UPDATE share_dividends SET pay_amount = pay_amount+$total_amount, supply_price = supply_price+$supplyprice, a_bonus = a_bonus+$level_one_vip2, b_bonus = b_bonus+$level_two_vip2, c_bonus = c_bonus+$level_three_vip2, profit_price = profit_price+$pay_original WHERE day_time = '{$day_time}'");
+				// 	} else {
+				// 		mysqli_query($mysqli,"INSERT INTO share_dividends (pay_amount, supply_price, a_bonus, b_bonus, c_bonus, profit_price, day_time) VALUES ('{$total_amount}', '{$supplyprice}', '{$level_one_vip2}', '{$level_two_vip2}' ,'{$level_three_vip2}', '{$pay_original}', '{$day_time}')");
+				// 	}
+				// }
 
 				/*一级*/
-				$query_level_one_vip2 = "SELECT mb_id FROM fyq_member where mb_phone = '{$member_recommend}'";
-				if ($result_level_one_vip2 = mysqli_query($mysqli, $query_level_one_vip2))
-				{
-					$level_one_vip2_totalNumber = mysqli_num_rows($result_level_one_vip2);
-				}
+				// $query_level_one_vip2 = "SELECT mb_id FROM fyq_member where mb_phone = '{$member_recommend}'";
+				// if ($result_level_one_vip2 = mysqli_query($mysqli, $query_level_one_vip2))
+				// {
+				// 	$level_one_vip2_totalNumber = mysqli_num_rows($result_level_one_vip2);
+				// }
 
-				if ($level_one_vip2_totalNumber) {
-					if ($level_one_vip2 >= 0 || $point_one_vip2 > 0) {
-						$sql_pay_one = mysqli_query($mysqli," UPDATE fyq_member SET mb_commission_all = mb_commission_all+$level_one_vip2, mb_commission_not_gold = mb_commission_not_gold+$level_one_vip2, mb_commission_not_count = mb_commission_not_count+1, mb_point = mb_point+$point_one_vip2 WHERE mb_phone = '{$member_recommend}'");
-						$pay_original = $pay_original-$level_one_vip2;//扣除一级合伙人权分红
-					}
-					if ($level_one_vip2 > 0) {
-						vital_member_plus($member_recommend,'0','0',$level_one_vip2,'1','0','0','0','0',$payment_method);
-						$query_level_one_vip2member = "SELECT mb_commission_not_gold FROM fyq_member where mb_phone = '{$member_recommend}'";
-						if ($result_level_one_vip2member = mysqli_query($mysqli, $query_level_one_vip2member))
-						{
-							$row_level_one_vip2member = mysqli_fetch_assoc($result_level_one_vip2member);
-							$level_one_vip2member_mb_not_gold_before = $row_level_one_vip2member['mb_commission_not_gold'];
-							$level_one_vip2member_mb_not_gold_after = $level_one_vip2member_mb_not_gold_before+$level_one_vip2;
-						}
-						$description_level_one_vip2 = '分红★ - '.$tl_name;
-						$sql_details_one_vip2 = mysqli_query($mysqli,"INSERT INTO balance_details (t_money, t_way, t_status, t_description, t_phone, t_caption, t_cate, t_trade_no, t_trade_no_alipay, t_payment_id, t_before_money, t_after_money) VALUES ('{$level_one_vip2}', 'revenue', '1', '{$description_level_one_vip2}' ,'{$member_recommend}', 'commission_money', 'commission_plus', '{$out_trade_no}', '{$trade_no}', '{$pay_id}', '{$level_one_vip2member_mb_not_gold_before}', '{$level_one_vip2member_mb_not_gold_after}')");//一级合伙人佣金记录
-					}
-					if ($point_one_vip2 > 0) {
-						vital_member_plus($member_recommend,'0','0','0','0','0','0','0',$point_one_vip2,$payment_method);
-						$description_point_one_vip2 = '分红★ - '.$tl_name;
-						$sql_point_one_vip2 = mysqli_query($mysqli,"INSERT INTO point_log (pg_point, pg_member, pg_memo, pg_cate, pg_payment_id) VALUES ('{$point_one_vip2}', '{$member_recommend}', '{$description_point_one_vip2}', '{$copartner_price_int}', '{$pay_id}')");//一级合伙人积分记录
-					}
-				}
+				// if ($level_one_vip2_totalNumber) {
+				// 	if ($level_one_vip2 >= 0 || $point_one_vip2 > 0) {
+				// 		$sql_pay_one = mysqli_query($mysqli," UPDATE fyq_member SET mb_commission_all = mb_commission_all+$level_one_vip2, mb_commission_not_gold = mb_commission_not_gold+$level_one_vip2, mb_commission_not_count = mb_commission_not_count+1, mb_point = mb_point+$point_one_vip2 WHERE mb_phone = '{$member_recommend}'");
+				// 		$pay_original = $pay_original-$level_one_vip2;//扣除一级合伙人权分红
+				// 	}
+				// 	if ($level_one_vip2 > 0) {
+				// 		vital_member_plus($member_recommend,'0','0',$level_one_vip2,'1','0','0','0','0',$payment_method);
+				// 		$query_level_one_vip2member = "SELECT mb_commission_not_gold FROM fyq_member where mb_phone = '{$member_recommend}'";
+				// 		if ($result_level_one_vip2member = mysqli_query($mysqli, $query_level_one_vip2member))
+				// 		{
+				// 			$row_level_one_vip2member = mysqli_fetch_assoc($result_level_one_vip2member);
+				// 			$level_one_vip2member_mb_not_gold_before = $row_level_one_vip2member['mb_commission_not_gold'];
+				// 			$level_one_vip2member_mb_not_gold_after = $level_one_vip2member_mb_not_gold_before+$level_one_vip2;
+				// 		}
+				// 		$description_level_one_vip2 = '分红★ - '.$tl_name;
+				// 		$sql_details_one_vip2 = mysqli_query($mysqli,"INSERT INTO balance_details (t_money, t_way, t_status, t_description, t_phone, t_caption, t_cate, t_trade_no, t_trade_no_alipay, t_payment_id, t_before_money, t_after_money) VALUES ('{$level_one_vip2}', 'revenue', '1', '{$description_level_one_vip2}' ,'{$member_recommend}', 'commission_money', 'commission_plus', '{$out_trade_no}', '{$trade_no}', '{$pay_id}', '{$level_one_vip2member_mb_not_gold_before}', '{$level_one_vip2member_mb_not_gold_after}')");//一级合伙人佣金记录
+				// 	}
+				// 	if ($point_one_vip2 > 0) {
+				// 		vital_member_plus($member_recommend,'0','0','0','0','0','0','0',$point_one_vip2,$payment_method);
+				// 		$description_point_one_vip2 = '分红★ - '.$tl_name;
+				// 		$sql_point_one_vip2 = mysqli_query($mysqli,"INSERT INTO point_log (pg_point, pg_member, pg_memo, pg_cate, pg_payment_id) VALUES ('{$point_one_vip2}', '{$member_recommend}', '{$description_point_one_vip2}', '{$copartner_price_int}', '{$pay_id}')");//一级合伙人积分记录
+				// 	}
+				// }
 
 
-				if ($level_one_vip2_totalNumber) {
-					/*二级*/
-					$query_two = "SELECT mb_recommend FROM fyq_member where mb_phone = '{$member_recommend}'";
-					if ($result_two = mysqli_query($mysqli, $query_two))
-					{
-						$row_two = mysqli_fetch_assoc($result_two);
-						$member_recommend_two = $row_two['mb_recommend'];
+				// if ($level_one_vip2_totalNumber) {
+				// 	/*二级*/
+				// 	$query_two = "SELECT mb_recommend FROM fyq_member where mb_phone = '{$member_recommend}'";
+				// 	if ($result_two = mysqli_query($mysqli, $query_two))
+				// 	{
+				// 		$row_two = mysqli_fetch_assoc($result_two);
+				// 		$member_recommend_two = $row_two['mb_recommend'];
 						
-						$query_level_two_vip2 = "SELECT mb_id FROM fyq_member where mb_phone = '{$member_recommend_two}'";
-						if ($result_level_two_vip2 = mysqli_query($mysqli, $query_level_two_vip2))
-						{
-							$level_two_vip2_totalNumber = mysqli_num_rows($result_level_two_vip2);
-						}
+				// 		$query_level_two_vip2 = "SELECT mb_id FROM fyq_member where mb_phone = '{$member_recommend_two}'";
+				// 		if ($result_level_two_vip2 = mysqli_query($mysqli, $query_level_two_vip2))
+				// 		{
+				// 			$level_two_vip2_totalNumber = mysqli_num_rows($result_level_two_vip2);
+				// 		}
 						
-							if ($level_two_vip2_totalNumber) {
-								if ($level_two_vip2 >= 0 || $point_two_vip2 > 0) {
-									$sql_pay_two = mysqli_query($mysqli,"UPDATE fyq_member SET mb_commission_all = mb_commission_all+$level_two_vip2, mb_commission_not_gold = mb_commission_not_gold+$level_two_vip2, mb_commission_not_count = mb_commission_not_count+1, mb_point = mb_point+$point_two_vip2 WHERE mb_phone = '{$member_recommend_two}'");
-									$pay_original = $pay_original-$level_two_vip2;//扣除二级合伙人权分红
-								}
-								if ($level_two_vip2 > 0) {
-									vital_member_plus($member_recommend_two,'0','0',$level_two_vip2,'1','0','0','0','0',$payment_method);
-									$query_level_two_vip2member = "SELECT mb_commission_not_gold FROM fyq_member where mb_phone = '{$member_recommend_two}'";
-									if ($result_level_two_vip2member = mysqli_query($mysqli, $query_level_two_vip2member))
-									{
-										$row_level_two_vip2member = mysqli_fetch_assoc($result_level_two_vip2member);
-										$level_two_vip2member_mb_not_gold_before = $row_level_two_vip2member['mb_commission_not_gold'];
-										$level_two_vip2member_mb_not_gold_after = $level_two_vip2member_mb_not_gold_before+$level_two_vip2;
-									}
-									$description_level_two_vip2 = '分红● - '.$tl_name;
-									$sql_details_two_vip2 = mysqli_query($mysqli,"INSERT INTO balance_details (t_money, t_way, t_status, t_description, t_phone, t_caption, t_cate, t_trade_no, t_trade_no_alipay, t_payment_id, t_before_money, t_after_money) VALUES ('{$level_two_vip2}', 'revenue', '1', '{$description_level_two_vip2}' ,'{$member_recommend_two}', 'commission_money', 'commission_plus', '{$out_trade_no}', '{$trade_no}', '{$pay_id}', '{$level_two_vip2member_mb_not_gold_before}', '{$level_two_vip2member_mb_not_gold_after}')");//二级天使佣金记录
-								}
-								if ($point_two_vip2 > 0) {
-									vital_member_plus($member_recommend_two,'0','0','0','0','0','0','0',$point_two_vip2,$payment_method);
-									$description_point_two_vip2 = '分红● - '.$tl_name;
-									$sql_point_two_vip2 = mysqli_query($mysqli,"INSERT INTO point_log (pg_point, pg_member, pg_memo, pg_cate, pg_payment_id) VALUES ('{$point_two_vip2}', '{$member_recommend_two}', '{$description_point_two_vip2}', '{$copartner_price_int}', '{$pay_id}')");//二级经纪人积分记录
-								}
-							}
-					}
-				}
-				if ($level_two_vip2_totalNumber) {
-					/*三级*/
-					$query_three = "SELECT mb_recommend FROM fyq_member where mb_phone = '{$member_recommend_two}'";
-					if ($result_three = mysqli_query($mysqli, $query_three))
-					{
-						$row_three = mysqli_fetch_assoc($result_three);
-						$member_recommend_three = $row_three['mb_recommend'];
+				// 			if ($level_two_vip2_totalNumber) {
+				// 				if ($level_two_vip2 >= 0 || $point_two_vip2 > 0) {
+				// 					$sql_pay_two = mysqli_query($mysqli,"UPDATE fyq_member SET mb_commission_all = mb_commission_all+$level_two_vip2, mb_commission_not_gold = mb_commission_not_gold+$level_two_vip2, mb_commission_not_count = mb_commission_not_count+1, mb_point = mb_point+$point_two_vip2 WHERE mb_phone = '{$member_recommend_two}'");
+				// 					$pay_original = $pay_original-$level_two_vip2;//扣除二级合伙人权分红
+				// 				}
+				// 				if ($level_two_vip2 > 0) {
+				// 					vital_member_plus($member_recommend_two,'0','0',$level_two_vip2,'1','0','0','0','0',$payment_method);
+				// 					$query_level_two_vip2member = "SELECT mb_commission_not_gold FROM fyq_member where mb_phone = '{$member_recommend_two}'";
+				// 					if ($result_level_two_vip2member = mysqli_query($mysqli, $query_level_two_vip2member))
+				// 					{
+				// 						$row_level_two_vip2member = mysqli_fetch_assoc($result_level_two_vip2member);
+				// 						$level_two_vip2member_mb_not_gold_before = $row_level_two_vip2member['mb_commission_not_gold'];
+				// 						$level_two_vip2member_mb_not_gold_after = $level_two_vip2member_mb_not_gold_before+$level_two_vip2;
+				// 					}
+				// 					$description_level_two_vip2 = '分红● - '.$tl_name;
+				// 					$sql_details_two_vip2 = mysqli_query($mysqli,"INSERT INTO balance_details (t_money, t_way, t_status, t_description, t_phone, t_caption, t_cate, t_trade_no, t_trade_no_alipay, t_payment_id, t_before_money, t_after_money) VALUES ('{$level_two_vip2}', 'revenue', '1', '{$description_level_two_vip2}' ,'{$member_recommend_two}', 'commission_money', 'commission_plus', '{$out_trade_no}', '{$trade_no}', '{$pay_id}', '{$level_two_vip2member_mb_not_gold_before}', '{$level_two_vip2member_mb_not_gold_after}')");//二级天使佣金记录
+				// 				}
+				// 				if ($point_two_vip2 > 0) {
+				// 					vital_member_plus($member_recommend_two,'0','0','0','0','0','0','0',$point_two_vip2,$payment_method);
+				// 					$description_point_two_vip2 = '分红● - '.$tl_name;
+				// 					$sql_point_two_vip2 = mysqli_query($mysqli,"INSERT INTO point_log (pg_point, pg_member, pg_memo, pg_cate, pg_payment_id) VALUES ('{$point_two_vip2}', '{$member_recommend_two}', '{$description_point_two_vip2}', '{$copartner_price_int}', '{$pay_id}')");//二级经纪人积分记录
+				// 				}
+				// 			}
+				// 	}
+				// }
+				// if ($level_two_vip2_totalNumber) {
+				// 	/*三级*/
+				// 	$query_three = "SELECT mb_recommend FROM fyq_member where mb_phone = '{$member_recommend_two}'";
+				// 	if ($result_three = mysqli_query($mysqli, $query_three))
+				// 	{
+				// 		$row_three = mysqli_fetch_assoc($result_three);
+				// 		$member_recommend_three = $row_three['mb_recommend'];
 						
-						$query_level_three_vip2 = "SELECT mb_id FROM fyq_member where mb_phone = '{$member_recommend_three}'";
-						if ($result_level_three_vip2 = mysqli_query($mysqli, $query_level_three_vip2))
-						{
-							$level_three_vip2_totalNumber = mysqli_num_rows($result_level_three_vip2);
-						}
+				// 		$query_level_three_vip2 = "SELECT mb_id FROM fyq_member where mb_phone = '{$member_recommend_three}'";
+				// 		if ($result_level_three_vip2 = mysqli_query($mysqli, $query_level_three_vip2))
+				// 		{
+				// 			$level_three_vip2_totalNumber = mysqli_num_rows($result_level_three_vip2);
+				// 		}
 						
-							if ($level_three_vip2_totalNumber) {
-								if ($level_three_vip2 >= 0 || $point_three_vip2 > 0) {
-									$sql_pay_three = mysqli_query($mysqli,"UPDATE fyq_member SET mb_commission_all = mb_commission_all+$level_three_vip2, mb_commission_not_gold = mb_commission_not_gold+$level_three_vip2, mb_commission_not_count = mb_commission_not_count+1, mb_point = mb_point+$point_three_vip2 WHERE mb_phone = '{$member_recommend_three}'");
-									$pay_original = $pay_original-$level_three_vip2;//扣除三级合伙人权分红
-								}
-								if ($level_three_vip2 > 0) {
-									vital_member_plus($member_recommend_three,'0','0',$level_three_vip2,'1','0','0','0','0',$payment_method);
-									$query_level_three_vip2member = "SELECT mb_commission_not_gold FROM fyq_member where mb_phone = '{$member_recommend_three}'";
-									if ($result_level_three_vip2member = mysqli_query($mysqli, $query_level_three_vip2member))
-									{
-										$row_level_three_vip2member = mysqli_fetch_assoc($result_level_three_vip2member);
-										$level_three_vip2member_mb_not_gold_before = $row_level_three_vip2member['mb_commission_not_gold'];
-										$level_three_vip2member_mb_not_gold_after = $level_three_vip2member_mb_not_gold_before+$level_three_vip2;
-									}
-									$description_level_three_vip2 = '分红■ - '.$tl_name;
-									$sql_details_three_vip2 = mysqli_query($mysqli,"INSERT INTO balance_details (t_money, t_way, t_status, t_description, t_phone, t_caption, t_cate, t_trade_no, t_trade_no_alipay, t_payment_id, t_before_money, t_after_money) VALUES ('{$level_three_vip2}', 'revenue', '1', '{$description_level_three_vip2}', '{$member_recommend_three}', 'commission_money', 'commission_plus', '{$out_trade_no}', '{$trade_no}', '{$pay_id}', '{$level_three_vip2member_mb_not_gold_before}', '{$level_three_vip2member_mb_not_gold_after}')");//三级天使佣金记录
-								}
-								if ($point_three_vip2 > 0) {
-									vital_member_plus($member_recommend_three,'0','0','0','0','0','0','0',$point_three_vip2,$payment_method);
-									$description_point_three_vip2 = '分红■ - '.$tl_name;
-									$sql_point_three_vip2 = mysqli_query($mysqli,"INSERT INTO point_log (pg_point, pg_member, pg_memo, pg_cate, pg_payment_id) VALUES ('{$point_three_vip2}', '{$member_recommend_three}', '{$description_point_three_vip2}', '{$copartner_price_int}', '{$pay_id}')");//三级经纪人积分记录
-								}
-							}
+				// 			if ($level_three_vip2_totalNumber) {
+				// 				if ($level_three_vip2 >= 0 || $point_three_vip2 > 0) {
+				// 					$sql_pay_three = mysqli_query($mysqli,"UPDATE fyq_member SET mb_commission_all = mb_commission_all+$level_three_vip2, mb_commission_not_gold = mb_commission_not_gold+$level_three_vip2, mb_commission_not_count = mb_commission_not_count+1, mb_point = mb_point+$point_three_vip2 WHERE mb_phone = '{$member_recommend_three}'");
+				// 					$pay_original = $pay_original-$level_three_vip2;//扣除三级合伙人权分红
+				// 				}
+				// 				if ($level_three_vip2 > 0) {
+				// 					vital_member_plus($member_recommend_three,'0','0',$level_three_vip2,'1','0','0','0','0',$payment_method);
+				// 					$query_level_three_vip2member = "SELECT mb_commission_not_gold FROM fyq_member where mb_phone = '{$member_recommend_three}'";
+				// 					if ($result_level_three_vip2member = mysqli_query($mysqli, $query_level_three_vip2member))
+				// 					{
+				// 						$row_level_three_vip2member = mysqli_fetch_assoc($result_level_three_vip2member);
+				// 						$level_three_vip2member_mb_not_gold_before = $row_level_three_vip2member['mb_commission_not_gold'];
+				// 						$level_three_vip2member_mb_not_gold_after = $level_three_vip2member_mb_not_gold_before+$level_three_vip2;
+				// 					}
+				// 					$description_level_three_vip2 = '分红■ - '.$tl_name;
+				// 					$sql_details_three_vip2 = mysqli_query($mysqli,"INSERT INTO balance_details (t_money, t_way, t_status, t_description, t_phone, t_caption, t_cate, t_trade_no, t_trade_no_alipay, t_payment_id, t_before_money, t_after_money) VALUES ('{$level_three_vip2}', 'revenue', '1', '{$description_level_three_vip2}', '{$member_recommend_three}', 'commission_money', 'commission_plus', '{$out_trade_no}', '{$trade_no}', '{$pay_id}', '{$level_three_vip2member_mb_not_gold_before}', '{$level_three_vip2member_mb_not_gold_after}')");//三级天使佣金记录
+				// 				}
+				// 				if ($point_three_vip2 > 0) {
+				// 					vital_member_plus($member_recommend_three,'0','0','0','0','0','0','0',$point_three_vip2,$payment_method);
+				// 					$description_point_three_vip2 = '分红■ - '.$tl_name;
+				// 					$sql_point_three_vip2 = mysqli_query($mysqli,"INSERT INTO point_log (pg_point, pg_member, pg_memo, pg_cate, pg_payment_id) VALUES ('{$point_three_vip2}', '{$member_recommend_three}', '{$description_point_three_vip2}', '{$copartner_price_int}', '{$pay_id}')");//三级经纪人积分记录
+				// 				}
+				// 			}
 						
-					}
-				}
+				// 	}
+				// }
 
 				//统计购买数量
 				$item_buy_count = mysqli_query($mysqli, "SELECT id FROM item_limit where item_id = '{$pay_shop}' and user_id = '{$member_id}'");

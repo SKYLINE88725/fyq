@@ -52,7 +52,7 @@
         if (isset($_COOKIE["member"])) {
         ?>
         var userName = '<?php echo $_COOKIE["member"];?>';
-        YDB.SetUserRelationForPush(userName);//userName为用户唯一标识
+        //YDB.SetUserRelationForPush(userName);//userName为用户唯一标识
         <?php
         }
         ?>
@@ -63,4 +63,4 @@
 </head>
 
 <body>
-<div class="animsition" style="padding-bottom: 45px;">
+<div class="animsition" style="padding-bottom: 30px;">

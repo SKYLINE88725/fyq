@@ -70,6 +70,11 @@ $query_view = "SELECT * FROM college_list where cl_id = '{$cl_id}'";
 $result_view = mysqli_query( $mysqli, $query_view );
 $row_view = mysqli_fetch_assoc( $result_view );
 
+$sub_id = $row[ 'sub_id' ];
+$query_subject = "SELECT * FROM subject_list where sub_id = '{$sub_id}'";
+$result_subject = mysqli_query( $mysqli, $query_subject );
+$row_subject = mysqli_fetch_assoc( $result_subject );
+
 $member_id = $member_view_mb_id;
 $picUrl = '../detailed_view.php?view='.$tid.'&type='.$type.'&mphone='.$member_login.'&qid='.$member_id;//二维码扫描出的链接
 
@@ -87,12 +92,12 @@ if ($type == "join") {
 ?>
 <?php 
 if (strstr($_SERVER['HTTP_USER_AGENT'],"fuyuanquan.net")) {
-    $top_navigate_return = '<div onClick="YDB.GoBack()"><img src="/img/return_top.png" alt="返回"></div>';
+    $top_navigate_return = '<div onClick="window.history.back()"><img src="/img/return_top.png" alt="返回"></div>';
 } else {
     if (@$_SERVER["HTTP_REFERER"]) {
-        $top_navigate_return = '<a href="/" target="_self"><img src="/img/return_top.png" alt="返回"></a>';
+        $top_navigate_return = '<div onClick="window.history.back()"><img src="/img/return_top.png" alt="返回"></div>';
     } else {
-        $top_navigate_return = '<a href="/" target="_self"><img src="/img/return_top.png" alt="返回"></a>';
+        $top_navigate_return = '<div onClick="window.history.back()"><img src="/img/return_top.png" alt="返回"></div>';
     }
 }
 echo "<script> var tid=".$tid;
@@ -106,8 +111,8 @@ echo "</script>"
 		display: block;
 	}
 </style>
-<link href="http://vjs.zencdn.net/7.0/video-js.min.css" rel="stylesheet">
-<script src="http://vjs.zencdn.net/7.0/video.min.js"></script>
+<!-- <link href="http://vjs.zencdn.net/7.0/video-js.min.css" rel="stylesheet">
+<script src="http://vjs.zencdn.net/7.0/video.min.js"></script> -->
 
 <div class="top_navigate"> 
 	<span>
@@ -127,7 +132,7 @@ echo "</script>"
         margin-top: -13px;
     }
 </style>
-<div class="swiper-container swiper4">
+<!-- <div class="swiper-container swiper4">
 <div class="swiper-wrapper">
 		<?php 
 		$pictures = (explode("|",$row['tl_pictures']));
@@ -146,255 +151,100 @@ echo "</script>"
 		}
 		?>
 	</div>
-	<!-- Add Pagination -->
+	
 	<div class="swiper-pagination"></div>
-	<!-- Add Arrows -->
+	
 	<div class="swiper-button-next"></div>
 	<div class="swiper-button-prev"></div>
+</div> -->
+<div style="margin-top: 48px;background-color:white">
+	<br>
+	<div class="mui-h4" style="text-align: center;"><?php echo $row['tl_name'];?></div>
+	<div style="text-align: center;margin-top: 20px"><img style="width: 100px; height: 100px; box-shadow: 0px 0px 15px 3px rgba(0,0,0,.3);border: solid white 2px;" src="<?php echo $row_subject['sub_picture'];?>"></div>
+	<div style="text-align: center;"><img src="img/reciever.png" style="vertical-align: bottom;width: 24px;"><span style="width: 20%; margin: 2px 5px"><?php echo $row['tl_Sales'];?></div>
+	<div class="mui-h5" style="text-align: center;margin: 20px;background-color: #efeff4;border-radius: 30px;padding: 0px 20px;"><?php echo $row['tl_summary'];?></div>
+
+	<div style="margin: 10px">
+		<div class="<?php $l=explode(".", $row['tl_video']); echo end($l) !== "mp4" ? "hide":"show"; ?>">
+			<video src="<?php echo 'videoplayer/playsong.php?filename='.$row['tl_video'] ?>" controls="controls" width="100%" autoplay playsinline>
+	        您的浏览器不支持 video 标签。
+	        </video>
+		</div>
+		<div class="<?php $l=explode(".", $row['tl_video']); echo end($l) !== "mp4" ? "show":"hide"; ?>">
+			<audio controls autoplay style="width:100%">					
+				<source src="<?php echo 'videoplayer/playsong.php?filename='.$row['tl_video'] ?>">
+			</audio>
+		</div>
+
+	</div>
+
 </div>
 
-<div class="tc_detailed_">
-	<ul>
-		<li class="tc_detailed_line1">
-			<p class="tc_detailed_title">
-				<?php echo $row['tl_name'];?>
-			</p>
-		</li>
-		<li>
-			<p>
-				<div>
-				<video id="home_video" controls playsinline autoplay class="video-js vjs-default-skin <?php $l=explode(".", $row['tl_video']); echo end($l) !== "mp4" ? "hide":"show"; ?>" data-setup="{}">
-					<source src="<?php echo 'videoplayer/playsong.php?filename='.$row['tl_video'] ?>" type="video/mp4">
-				</video>
-				</div>
-				<audio class="<?php $l=explode(".", $row['tl_video']); echo end($l) !== "mp4" ? "show":"hide"; ?>" controls>					
-					<source src="<?php echo 'videoplayer/playsong.php?filename='.$row['tl_video'] ?>">
-				</audio>
-			</p>
-		</li>		
-		
-		<li class="tc_detailed_line3">
-			<p class="tc_detailed_sales">月销 <?php echo $row['tl_Sales'];?> 笔</p>
-			<?php 
-				if (strstr($HTTP_USER_AGENT,"fuyuanquan.net")) {
-					$tc_mainimg = str_replace("..","",$row['tc_mainimg']);
-			?>
-			<p class="tc_detailed_share_txt" onClick="wxshare('<?php echo utf8_strcut(wxstrFilter($row['tl_name']),35,'');?>', '<?php echo utf8_strcut(wxstrFilter($row['tl_summary']),40,'');?>', '../<?php echo $tc_mainimg;?>', '<?php echo $picUrl;?>')">点击分享</p>
-			<?php 
-				} else {
-			?>
-			<!-- <p class="tc_detailed_share_txt" onClick="clipboard_share('<?php echo $picUrl;?>')">复制链接</p> -->
-			<?php 
-				}
-			?>
-		</li>
-		<!-- <?php
-			if( $member_login && ( $row['tl_point_type'] == "3" || $row['tl_point_type'] == "4" || $type != "company" ) ){
-		?>
-			<li class="tc_detailed_line4">
-				<a href="/member_shipping_address.php?from_detail=1&detail_item=<?php echo $_GET['view']; ?>&detail_type=<?php echo $_GET['type']; ?>">
-					<p class="tc_detailed_shipping_address" style="float: left;">收货地址</p>
-				</a>
-				<a href="/member_shipping_address.php?from_detail=1&detail_item=<?php echo $_GET['view']; ?>&detail_type=<?php echo $_GET['type']; ?>" style="float: right;">
-					<p class="point_1"></p>
-				</a>
-			</li>
-		<?php
-			}
-		?> -->
-	</ul>
-</div>
 <?php
 if ( $type == "company" ) {
-	?>
-	<div class="businesses_detailed_account">
-		<ul>
-			<li><img src="<?php echo $row_view['cl_logo'];?>" alt="">
-			</li>
-			<li>
-				<p>
-					<?php echo $row_view['cl_name'];?>
-				</p>
-				<p class="detailed_view_region">
-					<font color="#828282">
-						<?php echo $row['tc_province1'];?>
-						<?php echo $row['tc_city1'];?>
-						<?php echo $row['tl_district1'];?>
-					</font>
-				</p>
-                <p id="user_phone">电话：
-						<?php echo $row['tl_phone'];?>
-				</p>
-			</li>
-			<li><a href="user_blog.php?id=<?php echo $row_view['cl_id'];?>" target="_self">详情</a>
-			</li>
-		</ul>
-		<ul>
-			<li><a href="#" target="_self">学院宝贝 <font color="#707070"><?php echo $row_view['cl_allcount'];?></font></a>
-			</li>
-			<li><a href="my_commodity_add1.php" target="_self">学院销量 <font color="#707070"><?php echo $row_view['cl_allsales'];?></font></a>
-			</li>
-			<li><a href="index_test.php" target="_self">关注人数 <font color="#707070"><?php echo $row_view['cl_allfollow'];?></font></a>
-			</li>
-		</ul>
+?>
+<div style="background-color:white;padding: 10px;margin-bottom: 10px">
+	<div style="float: left"><img style="width: 60px;height: 60px" src="<?php echo $row_view['cl_logo'];?>"></div>
+	<div style="float: left;margin-left: 10px">
+		<p style="margin: 0px"><?php echo $row_view['cl_name'];?></p>
+		<p style="margin: 0px"><?php echo $row['tc_province1'];?><?php echo $row['tc_city1'];?><?php echo $row['tl_district1'];?></p>
+		<p style="margin: 0px">电话： <?php echo $row['tl_phone'];?></p>
 	</div>
-	<?php
-}
-?>
-<?php
-if ($row['tl_summary']){
-?>
-	<div class="tc_detailed_simple"><?php echo nl2br($row['tl_summary']);?></div>
+
+	<div style="float: right;"><img id="follow_<?php echo $row['tl_id'];?>" onClick="follows('<?php echo $tid;?>','<?php echo $member_login;?>','<?php echo $follow_img;?>')" src="<?php echo $follow_img;?>" alt="收藏" style="width: 20px"></div>
+	<div class="clearfix"></div>
+</div>
 <?php
 }
 ?>
 
-<!-- <div class="tc_detailed_foot" style="z-index: 100;">
-	<ul>
-		<li>
-            <?php if($member_login && $row["mb_nick"]): ?>
-                <span style="width:20%;" onclick="location.href='/chat/chat.php?partner=<?php echo $row["tl_phone"];?>'"><img src="images/chat.png" id="toggle-chat"></span>
-            <?php endif;?>
-            <?php
-            if ($row['GPS_X'] && $row['GPS_Y']) {
-            ?>
-            <span class="tc_detailed_foot_gps">查看路线</span>
-            <span class="tc_detailed_foot_follow1"><img id="follow_<?php echo $row['tl_id'];?>" onClick="follows('<?php echo $tid;?>','<?php echo $member_login;?>','<?php echo $follow_img;?>')" src="<?php echo $follow_img;?>" alt="收藏"></span>
-            <?php 
-            } else {
-            ?>
-            <span class="tc_detailed_foot_follow2"><img id="follow_<?php echo $row['tl_id'];?>" onClick="follows('<?php echo $tid;?>','<?php echo $member_login;?>','<?php echo $follow_img;?>')" src="<?php echo $follow_img;?>" alt="收藏"></span>
-            <?php }?>
-        </li>
-		<?php 
-		if ($row['shop_menu'] == "partner") {
-		?>
-		<li class="item_buy" >立即获取</li>
-		<?php 
-		} else if($row['shop_menu'] == "teacher"){
-			echo '<li class="item_buy" style="pointer-events: none;background-color: grey;">立即获取</li>';
-		}
-		?>
-		<?php 
-		if ($row['tl_point_type'] == "1" && $member_login == $row['tl_phone']) {
-		?>
-		<li class="item_point" style="pointer-events: none;background-color: grey;">立即兑换</li>
-		<?php 
-		} else if($row['tl_point_type'] == "1" && $member_login != $row['tl_phone']){
-		?>
-		<li class="item_point">立即兑换</li>
-		<?php
-		}
-		?>
-		<?php 
-		if ($row['tl_point_type'] == "2" && $member_login == $row['tl_phone']) {
-			echo '<li class="item_buy" style="pointer-events: none;background-color: grey;">立即获取</li>';
-		} else if($row['tl_point_type'] == "2" && $member_login != $row['tl_phone']){
-		?>
-		<li class="item_buy">立即获取</li>
-		<?php 
-		}
-		?>
-		<?php 
-		if ($row['tl_point_type'] == "3" && $member_login == $row['tl_phone']) {
-			echo '<li class="item_scan" style="pointer-events: none;background-color: grey;">立即支付</li>';
-		} else if($row['tl_point_type'] == "3" && $member_login != $row['tl_phone']){
-		?>
-		<li class="item_scan" onclick='check_shipping_address("scan_pay.php?bid=<?php echo $row['tl_id'];?>")'><a>立即支付</a></li>
-		<?php 
-		}
-		?>
-        <?php 
-		if ($row['tl_point_type'] == "4" && $member_login == $row['tl_phone']) {
-			echo '<li class="item_scan" style="pointer-events: none;background-color: grey;">立即支付</li>';
-		} else if($row['tl_point_type'] == "4" && $member_login != $row['tl_phone']){
-		?>
-		<li class="item_scan"  onclick='check_shipping_address("vip_card.php?bid=<?php echo $row['tl_id'];?>")'>
-			<a>立即获取</a>
-		</li>
-		
-		<?php 
-		}
-		?>
-	</ul>
 
-
-
-</div> -->
-
-<!-- <div class="tc_detailed_confirm">
-	<ul>
-		<li class="tc_detailed_confirm_view">
-			<div> <img src="<?php echo $row['tc_mainimg'];?>" alt=""> </div>
-			<div>
-				<p>
-					<?php echo $row['tl_name'];?><span><img src="img/off_tc.png" alt="取消" class="tc_detailed_off"></span>
-				</p>
-				<p>
-					<?php if ($row_cate['ic_name']) {echo $row_cate['ic_name'];}?>
-				</p>
-				<?php 
-				if ($row['tl_point_type'] == "0") {
-				?>
-				<p>
-					<font color="#cdcdcd">价格:</font>
-					<font color="#ff0000">￥
-						<?php echo $row['tl_price'];?>
-					</font>
-				</p>
-				<?php 
-				}
-				?>
-				<?php 
-				if ($row['tl_point_type'] == "1") {
-				?>
-				<p class="item_point">
-					<img src="img/point_ico.png" alt="幸福豆图标"><?php echo $row['tl_point_commodity'];?>
-				</p>
-				<?php 
-				}
-				?>
-				<?php 
-				if ($row['tl_point_type'] == "2") {
-				?>
-				<p class="item_point">
-					<span>￥<?php echo $row['tl_price'];?></span>
-					<img src="img/point_ico.png" alt="幸福豆图标"><?php echo $row['tl_point_commodity'];?>
-				</p>
-				<?php 
-				}
-				?>
-			</div>
-		</li>
-		<?php 
-if ($type == "company") {
+<?php 
+	$query_list = "SELECT * FROM teacher_list where sub_id= '{$sub_id}' ORDER BY tl_id desc";
+	if ($result_list = mysqli_query($mysqli, $query_list))
+	{
+		while( $row_list = mysqli_fetch_assoc($result_list) ){ 
+			$tlid = $row_list['tl_id'];
+			$sql_follow = mysqli_query($mysqli, "SELECT count(*) FROM follow_list where fl_phone = '{$member_login}' and fl_tid = '{$tlid}'");
+			$follow_rs = mysqli_fetch_array($sql_follow,MYSQLI_NUM);
+			$follow_totalNumber = $follow_rs[0];
+			if ($follow_totalNumber) {
+				$follow_img = "img/on_ok.png";
+			} else {
+				$follow_img = "img/off_ok.png";
+			}
+			$shop_type = $row_list['shop_menu'];
+			$shop_cate = $row_list['tl_cate'];
+			$query_cate = "SELECT * FROM item_cate where ic_cid = '{$shop_cate}' and ic_type = '{$shop_type}'";
+			if ($result_cate = mysqli_query($mysqli,$query_cate)) {
+				$row_cate = mysqli_fetch_assoc($result_cate);
+			}
 ?>
-		<li class="tc_detailed_confirm_squantity"> <span>获取数量</span>
-			<div class="tc_detailed_confirm_count"><img src="img/shopchartcount1.png" alt="减" class="businesses_detailed_jian">
-				<input type="number" name="businesses_detailed_count" value="1">
-				<img src="img/shopchartcount2.png" alt="加" class="businesses_detailed_jia">
-			</div>
-		</li>
-		<?php 
-}
+		<div class="mui-card" style="margin: 1px 0px; padding: 0px 20px;background-color: white;color: #333;box-shadow: none;" id="commodity_<?php echo $row_list['tl_id'];?>">
+		    <a class="mui-card-content"  href="detailed_view.php?view=<?php echo $row_list['tl_id'];?>&type=company" target="_self">
+		    	<p class="businesses_blog_list_title mui-h4 mui-ellipsis"><?php echo $row_list['tl_name'];?></p>
+		    	<p class="businesses_blog_list_title mui-h5 mui-ellipsis"><?php echo $row_list['tl_summary'];?></p>
+		    	<p class="businesses_blog_list_title mui-h5"><img src="img/reciever.png" style="vertical-align: top;width: 24px;"><span style="width: 20%; margin: 2px 5px"><?php echo $row_list['tl_Sales'];?></span><span><img id="follow_<?php echo $row_list['tl_id'];?>" onClick="follow_id('<?php echo $row_list['tl_id'];?>')" src="<?php echo $follow_img;?>" alt="" style="width: 20px;float: right;"></span></p>
+		    </a>
+		    <div class="clearfix"></div>
+<?php
+			if ($type == "teacher") {
+?>		    
+		    <div class="businesses_blog_list_cate" style="position: absolute; top: 5px; right: 5px">
+                <!-- <div class="mui-btn mui-btn-primary"><a style="color: #FFFFFF;" href="my_commodity_alter.php?id=<?php echo $row_list['tl_id'];?>">修改</a></div> -->
+                <div class="mui-btn" onClick="lecture_del('<?php echo $row_list['tl_id'];?>')">删除</div>
+            </div>
+<?php
+			}
+?>		    
+		</div>
+<?php
+		}
+	}
 ?>
-		<li class="tc_detailed_line4" id="shipping_address" style="background-color: white;margin-bottom: 20px;margin-top: 20px;">
-			<?php 
-				if($member_login){
-			?>
-			<a href="/member_shipping_address.php?from_detail=1&detail_item=<?php echo $_GET['view']; ?>&detail_type=<?php echo $_GET['type']; ?>">
-				<p class="tc_detailed_shipping_address" style="float: left;">收货地址</p>
-			</a>
-			<a href="/member_shipping_address.php?from_detail=1&detail_item=<?php echo $_GET['view']; ?>&detail_type=<?php echo $_GET['type']; ?>" style="float: right;">
-				<p class="point_2"></p>
-			</a>
-			<?php
-			}?>
-		</li>
-		<li class="tc_detailed_confirm_confirm"> 确定 </li>
-	</ul>
-</div> -->
+
 <div class="tc_detailed_bg"></div>
+
 <?php
 if($member_login && $row["mb_nick"]):
     ?>
@@ -463,7 +313,7 @@ endif;
 		<li>截屏保存分享给您的朋友</li>
 	</ul>
 </div> -->
-
+<!-- <button onClick="test_pay_success()">Test</button> -->
 <script type="text/javascript">
     //     var mb_id = "<?php echo $mb_id;?>";
 	// var shipping_id = "<?php echo $mb_shipping_id;?>";
@@ -595,24 +445,25 @@ endif;
 				
 			}
 		});
-		videojs("home_video", {"height":"auto", "width":"auto"}).ready(function(){
-			var myPlayer = this;    // Store the video object
-			var aspectRatio = 9/16; // Make up an aspect ratio
+		// videojs("home_video", {"height":"auto", "width":"auto"}).ready(function(){
+		// 	var myPlayer = this;    // Store the video object
+		// 	var aspectRatio = 9/16; // Make up an aspect ratio
 
-			function resizeVideoJS(){
-			// Get the parent element's actual width
-			var width = document.getElementById(myPlayer.id()).parentElement.offsetWidth;
-			// Set width to fill parent element, Set height
-			myPlayer.width(width);
-			myPlayer.height( width * aspectRatio );
-			}
+		// 	function resizeVideoJS(){
+		// 	// Get the parent element's actual width
+		// 	var width = document.getElementById(myPlayer.id()).parentElement.offsetWidth;
+		// 	// Set width to fill parent element, Set height
+		// 	myPlayer.width(width);
+		// 	myPlayer.height( width * aspectRatio );
+		// 	}
 
-			resizeVideoJS(); // Initialize the function
-			window.onresize = resizeVideoJS; // Call the function on resize
-		});
+		// 	resizeVideoJS(); // Initialize the function
+		// 	window.onresize = resizeVideoJS; // Call the function on resize
+		// });
 	});
 
 	function test_pay_success() {
+		alert("sf");
 			$.post("pay_success.php",
 				{
 					

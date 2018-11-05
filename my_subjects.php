@@ -32,8 +32,26 @@ $top_title = "科目列表";
 $top_url = '<span style="text-align: right; width: auto; margin-right:2%;" onClick="window.location.href=\'my_subject_add.php\'">新科目发布<span>';
 $return_url = "..";
 include("include/top_navigate_commodity.php");
+$row_college = mysqli_fetch_assoc($result_college);
 ?>
-<div class="businesses_blog_list" style="margin-top: 54px;">
+
+<img src="<?php echo $row_college['cl_bg'];?>" style="width: 100%;height: 120px;filter: blur(2px);top:48px;position: absolute;">
+<div style="position: relative;margin-top: 80px;">
+    <img src="<?php echo $row_college['cl_logo'];?>" style="width: 100px;height: 100px; box-shadow: 0px 0px 15px 3px rgba(0,0,0,.3);border: solid white 2px;float: left;margin: 18px 20px">
+    <div style="padding-top: 15px;">
+        <p style="padding: 0px;color: white;font-size: 18px; margin: 3px;"><?php echo $row_college['cl_name'];?></p>
+        <p class="mui-ellipsis" style="padding: 0px;font-size: 15px;color: white;margin: 3px;"><?php echo $row_college['cl_province'];?> <?php echo $row_college['cl_city'];?> <?php echo $row_college['cl_area'];?></p>
+    </div>
+    <div style="color: #333;background-color: #efeff4;border-radius: 8px;">
+        <p class="businesses_blog_list_cate" style="margin-bottom: auto;">
+            <img src="img/series.png" style="vertical-align: middle;width: 22px;"><span style="margin: 0px 5px"><?php echo $row_college['cl_allfollow'];?></span>
+            <span style="float: right;padding: 0px 5px;background-color: #ff655e;color: white;border-radius: 3px;margin-right: 10px;margin-top: 6px;line-height: 1.7;"><?php echo $row_college['ic_name'];?></span>
+        </p>
+        <p><img src="img/reciever.png" style="vertical-align: top;width: 24px;"><span style="width: 20%; margin: 2px 5px"><?php echo $row_college['cl_allsales'];?></span></p>
+    </div>
+</div>
+<div class="clearfix"></div>
+<div class="businesses_blog_list">
     <?php 
         $query = "SELECT * FROM college_list where cl_phone = '{$member_login}'";
        
@@ -68,9 +86,9 @@ include("include/top_navigate_commodity.php");
                     $row_cate = mysqli_fetch_assoc($result_cate);
                 }
     ?>
-                <div class="mui-card" id="subject_<?php echo $row_list['sub_id'];?>">
+                <div class="mui-card" style="margin: 1px 0px; padding: 0px;box-shadow: none;" id="subject_<?php echo $row_list['sub_id'];?>">
                     
-                    <div class="mui-card-media card businesses_blog_list_small mui-pull-left" style="width: 30%;padding: 10px" ><a class="mui-media-object" href="lecture_list.php?sub_id=<?php echo $row_list['sub_id'];?>" target="_self"><img src="<?php echo $row_list['sub_picture'];?>" alt=""></a></div>
+                    <div class="mui-card-media card businesses_blog_list_small mui-pull-left" style="width: 30%;padding: 10px" ><a class="mui-media-object" href="lecture_list.php?sub_id=<?php echo $row_list['sub_id'];?>&type=teacher" target="_self"><img src="<?php echo $row_list['sub_picture'];?>" alt=""></a></div>
                     <div class="mui-card-content mui-pull-left" style="padding: 6px; width: 70%">
                         
                             <p class="businesses_blog_list_title mui-h4" style="text-overflow: ellipsis;white-space: nowrap;overflow: hidden;"><?php echo $row_list['sub_title'];?></p>

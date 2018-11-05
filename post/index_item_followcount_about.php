@@ -159,7 +159,7 @@ if ($item_cate == "discount_new") {
 			$starCount = 5;
 			$oneCount = ceil($sales_totalNumber / 10) / 5 * 10;
 
-          $query = "SELECT * FROM college_list LEFT JOIN teacher_list ON college_list.cl_id=teacher_list.tl_class where teacher_list.tl_district1 = '{$user_region}' limit $item_count,10";
+          $query = "SELECT * FROM college_list where cl_area = '{$user_region}' limit $item_count,10";
 			
 			//echo $query;
 			$nnn = 0;
@@ -236,10 +236,7 @@ if ($item_cate == "discount_new") {
                         // 起点坐标
                         $longitude1 = $gpslo;
                         $latitude1 = $gpsla;
-                            // echo $row['GPS_X'];
-                            // echo $row['GPS_Y'];
-                            // echo $gpslo;
-                            // echo $gpsla;
+                            
                         // 终点坐标
                         $longitude2 = $row['GPS_X'];
                         $latitude2 = $row['GPS_Y'];
@@ -266,9 +263,9 @@ if ($item_cate == "discount_new") {
             <img class="mui-pull-left" src="<?php echo $main_img;?>" style="/*outline: 1px solid #d3d2d4;*/width:80px;height:80px;border-radius:6px;margin-right:12px;">
             <!-- <img class="mui-pull-left" style="width:80px;height:80px;border-radius:10px;margin-right:5px;" src="<?php echo $main_img;?>"> -->
             <div class="mui-media-body" style="font-size: 0.42rem; line-height: 0.42rem;">
-                <?php echo $row['tl_name']?>
+                <?php echo $row['cl_name']; echo "     ";echo $row['cl_phone']?>
                 <p style="font-size: 0.32rem; color: #333333;margin-top: 5px; line-height: none;" class="mui-ellipsis">
-                    <?php echo nl2br($row['tl_summary']);?>
+                    <?php echo nl2br($row['cl_city']);echo "     ";echo $row['cl_area']?>
                 </p>
             </div>
             <div style="margin-top:10px;">

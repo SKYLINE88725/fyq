@@ -11,7 +11,7 @@ include("include/function.php");
 $member_login = @$_COOKIE["member"];
 $head_title = "福源泉";
 
-$me_state = get_user_type( $member_login, $mysqli );
+$me_state = get_user_type_1( $member_login, $mysqli );
 
 $res = mysqli_query($mysqli, "SELECT * FROM settings;");
 $settings = mysqli_fetch_array($res,MYSQLI_ASSOC);
@@ -304,9 +304,9 @@ include( "include/head_.php" );
 
 <div style="position:fixed; top: 40px; z-index: 7; background-color: transparent;box-shadow: none;" class="mui-bar mui-bar-nav">
     <div style="position: absolute;left:0px;height: 40px;width:100%;background-image: url('../img/banner/banner-bg.png'); background-size: cover;"></div>
-    <form action="item_list.php" method="get" class="mui-pull-left mui-col-sm-7 mui-col-xs-7 mui-input-row color-white" style="margin-top: 0.15em; text-align: center;padding-left: 10px;padding-right: 10px;">
+    <form action="search.php" method="get" class="mui-pull-left mui-col-sm-7 mui-col-xs-7 mui-input-row color-white" style="margin-top: 0.15em; text-align: center;padding-left: 10px;padding-right: 10px;">
         <input type="hidden" name="menu" value="busines">
-        <input type="search" name="bus_keyword" style="background-color:rgba(255,255,255,0.3);text-overflow: ellipsis;white-space: nowrap;overflow: hidden;padding-left: 28px" value="" placeholder="请输入你要查找的关键词">    
+        <input type="search" name="keyword" style="background-color:rgba(255,255,255,0.3);text-overflow: ellipsis;white-space: nowrap;overflow: hidden;padding-left: 28px" value="" placeholder="请输入你要查找的关键词">    
     </form>
     <img style="position: absolute;width: 18px; top: 14px;left: 28px" src="img/magnifying-glass.png">
     <div id="dcontent" class="mui-pull-left dcontent mui-col-sm-2 mui-col-xs-3" style="margin-top: 4.7px;">
@@ -319,6 +319,7 @@ include( "include/head_.php" );
         <p style="font-size: 0.35rem;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;margin-top: 11px;" class="color-white" id="current_location"><?php echo $_COOKIE['user_region'];?></p>
     </div>
 </div>
+<div id="main_area">
 <div class="mui-scroll" style="margin-top: 70px; padding: 15px">
     <div id="slider-img" class="mui-slider" style="height: 4.3rem;border-radius: 6px">
         <div class="mui-slider-group mui-slider-loop">
@@ -429,13 +430,13 @@ include( "include/head_.php" );
             
             if ($result = mysqli_query($mysqli, $query))
             {
-                while( $row = mysqli_fetch_assoc($result) ){        
+                while( $row = mysqli_fetch_assoc($result) ){
          ?>
 
-            <div style="width: 33%; padding: 5px; float: left; ">
+            <div style="width: 33%; padding: 5px; float: left; min-height: 100px ">
                 <div style="width: 100%;position: relative;">
                     <div style="position: absolute;z-index: 5;font-size: 11px;background-color: #ff655e; border-bottom-right-radius:6px; color: white; padding: 0px 5px;height: 19px">名师</div>
-                    <a class="animsition-link" href="user_blog.php?id=<?php echo $row['cl_id'];?>&type=join" target="_self"><img src="<?php echo $row['cl_logo'];?>" style="width: 100%;height: 100%"></a>
+                    <a class="animsition-link" href="subject_list.php?id=<?php echo $row['cl_id'];?>&type=join" target="_self"><img src="<?php echo $row['cl_logo'];?>" style="width: 100%;height: 100%;min-height: 100px"></a>
                     <div style="width: 100%;height: 24px;position: absolute;z-index: 5;background-color: rgba(0,0,0,0.5);padding: 2px 5px; bottom: 6px;">
                         <p style="float: right; color: white; padding-left: 6px"><?php echo $row['cl_allfollow'];?></p>
                         <img src="img/like.png" style="height: 16px; float: right;">
@@ -450,42 +451,37 @@ include( "include/head_.php" );
 
         </div>
         <div class="clearfix"></div>
-        <div style="background-color: #efeff4;border-radius: 20px;padding: 4px 20px;overflow: hidden;margin: auto;width: 38%">
-            <img id="loading_teacher" src="img/refresh.png" style="float: left;width: 20px;margin: 5px;">
-            <p style="float: right;margin: 5px" onclick="get_top_teacher_group()">换一批</p>
+        <div style="background-color: #efeff4;border-radius: 20px;padding: 4px 20px;overflow: hidden;margin: auto;width: 150px;text-align: center;">
+            <img id="loading_teacher" src="img/refresh.png" style="width: 16px;vertical-align: text-bottom;">
+            <span style="font-size: 14px;color: grey;margin-left: 20px;" onclick="get_top_teacher_group()">换一批</span>
         </div>
         <div class="clearfix"></div>
     </div>
     <div class="clearfix"></div>
     <div style="background-color: white; width: 100%;padding:10px;margin-top: 10px;">
-        <div style="width: 100%;">
-            <img src="img/section.png" style="float: left;width: 16px">
-            <p style="float: left;font-size: 0.4rem;color: #333333;margin-left: 5px">推荐学院</p>
-            <!-- <a href="./recommend.php"><p style="float: right;font-size: 0.4rem">查看全部></p></a> -->
-        </div>
-        <div class="clearfix"></div>
-    <div id="divLectureList" style="width: 100%;">
+        <div id="divLectureList" style="width: 100%;">
             
-               <video src="./video/shehui.mp4" controls="controls" width="100%">
+               <video src="./video/shehui.mp4" controls="controls" width="100%" playsinline  poster="./video/logo_index.png">
                 您的浏览器不支持 video 标签。
                 </video>
         </div>
       
-    <div class="clearfix"></div></div>
-    <div style="background-color: white; width: 100%;padding:10px;margin-top: 10px;">
-        
         <div class="clearfix"></div>
-   
-
-    <div class="clearfix"></div>
- <div class="item_main_list_hot1" style="width: 100%; margin-top: 10px;">
-            <div id="item_list" style="margin:auto;background-color: white"></div>
-             <div class="item_main_list_hot_loding" style="display: none;">
-              <div class="loader_ajax"></div>
-           </div>
+    </div>
+    <div style="background-color: white; width: 100%;padding:10px;margin-top: 10px;">
+        <div style="width: 100%;">
+            <img src="img/section.png" style="float: left;width: 16px">
+            <p style="float: left;font-size: 0.4rem;color: #333333;margin-left: 5px">推荐课程</p>
+            <!-- <a href="./recommend.php"><p style="float: right;font-size: 0.4rem">查看全部></p></a> -->
         </div>
-   
-
+        <div class="clearfix"></div>
+        <div class="item_main_list_hot1" style="width: 100%;">
+            <div id="item_list" style="margin:auto;background-color: white"></div>
+            <div class="item_main_list_hot_loding" style="display: none;">
+                 <div class="loader_ajax"></div>
+            </div>
+        </div>
+    </div>
 </div>
 <div class="foot">
     <a href="index.php" target="_self" class="foot_ico no-link" style="color: #f99c73; background-color: #5a2dab;border-top: #f99c73 3px solid;">
@@ -632,12 +628,12 @@ include( "include/head_.php" );
         }
 
         $(window).scroll(function () {
-            if ($(".index_item_list_hot").is(".item_main_list_title_font_new")) {
-                index_item_list("hot_new", "no", sort_id);
-            }
-            if ($(".index_item_list_discount").is(".item_main_list_title_font_new")) {
+            // if ($(".index_item_list_hot").is(".item_main_list_title_font_new")) {
+            //     index_item_list("hot_new", "no", sort_id);
+            // }
+            //if ($(".index_item_list_discount").is(".item_main_list_title_font_new")) {
                 index_item_list("discount_new", "no", sort_id);
-            }
+            //}
         });
         <?php
     		if($member_login)
@@ -660,16 +656,8 @@ include( "include/head_.php" );
         sort_id = $("ul#horizontal-list li.active").val();
         $(".item_main_list_hot_loding").html("");
         $("#item_list").html("");
-        if ($(".index_item_list_hot").is(".item_main_list_title_font_new")) {
-            item_cate = "hot_new";
-        }
-        else if ($(".index_item_list_discount").is(".item_main_list_title_font_new")) {
-            item_cate = "discount_new";
-        }
-        else{
-            item_cate = "discount_new";
-        }
-        $.post("post/index_item_followcount_main.php", {
+        item_cate = "discount_new";
+        $.post("post/index_subject_followcount_main.php", {
                 item_count: 0,
                 item_order_by: item_cate,
                 sort_id: sort_id,
@@ -712,18 +700,18 @@ include( "include/head_.php" );
     }
 
     function index_item_list(item_cate, return_loding, sort_id) {
-        if (item_cate == "hot_new") {
-            $(".index_item_list_hot").addClass("item_main_list_title_font_new");
-            $(".index_item_list_discount").removeClass("item_main_list_title_font_new");
-        }
-        if (item_cate == "discount_new") {
-            $(".index_item_list_discount").addClass("item_main_list_title_font_new");
-            $(".index_item_list_hot").removeClass("item_main_list_title_font_new");
-        }
+        // if (item_cate == "hot_new") {
+        //     $(".index_item_list_hot").addClass("item_main_list_title_font_new");
+        //     $(".index_item_list_discount").removeClass("item_main_list_title_font_new");
+        // }
+        // if (item_cate == "discount_new") {
+        //     $(".index_item_list_discount").addClass("item_main_list_title_font_new");
+        //     $(".index_item_list_hot").removeClass("item_main_list_title_font_new");
+        // }
         windowScrollHight = $(window).height();
         documentScrollHight = $(document).height();
         documentscrollTop = $(document).scrollTop();
-        if ((windowScrollHight + documentscrollTop) >= (documentScrollHight-4200) || return_loding == "yes") {
+        if ((windowScrollHight + documentscrollTop) >= (documentScrollHight-0) || return_loding == "yes") {
             looding = $(".item_main_list_hot_loding").css("display");
             if (looding == "none") {
                 var item_main_list_count = $("#item_list ul").length;
@@ -735,7 +723,7 @@ include( "include/head_.php" );
                     $("#item_list").html("");
                     //$("#slider-img").html("");
                 }
-                $.post("post/index_item_followcount_main.php", {
+                $.post("post/index_subject_followcount_main.php", {
                         item_count: item_main_list_count,
                         item_order_by: item_cate,
                         sort_id: sort_id,

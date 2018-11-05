@@ -297,12 +297,12 @@ include("include/top_navigate_commodity.php");
 					function ( data, status ) {						
 						if ( data == "1" ) {
 							alert('发布成功！');
-							location.href = "lecture_list.php?sub_id=<?php echo $sub_id;?>";
+							location.href = "lecture_list.php?sub_id=<?php echo $sub_id;?>&type=teacher";
 						}
 						else
 						{
 							alert('发布失败！');
-							location.href = "lecture_list.php?sub_id=<?php echo $sub_id;?>";
+							location.href = "lecture_list.php?sub_id=<?php echo $sub_id;?>&type=teacher";
 						}
 					} );
 			}

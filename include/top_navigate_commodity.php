@@ -1,11 +1,11 @@
 <?php 
 if (strstr($_SERVER['HTTP_USER_AGENT'],"fuyuanquan.net")) {
-    $top_navigate_return = '<div onClick="YDB.GoBack()"><img src="/img/return_top.png" alt="返回"></div>';
+    $top_navigate_return = '<div onClick="window.history.back()"><img src="/img/return_top.png" alt="返回"></div>';
 } else {
     if (@$_SERVER["HTTP_REFERER"]) {
-        $top_navigate_return = '<a href="/" target="_self"><img src="/img/return_top.png" alt="返回"></a>';
+        $top_navigate_return = '<div onClick="window.history.back()"><img src="/img/return_top.png" alt="返回"></div>';
     } else {
-        $top_navigate_return = '<a href="/" target="_self"><img src="/img/return_top.png" alt="返回"></a>';
+        $top_navigate_return = '<div onClick="window.history.back()"><img src="/img/return_top.png" alt="返回"></div>';
     }
 }
 ?>

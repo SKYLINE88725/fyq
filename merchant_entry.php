@@ -212,6 +212,7 @@ if ($me_state == '1')
 			  	<input class="mui-input-clear" type="text" name="merchant_phone" value="<?php echo $row_merchant['me_phone']?>" placeholder="请输入联系电话">
 			</li>
             <li class="mui-input-row" style="height: 60px;">
+                
 				<div data-toggle="distpicker" class="area_select merchant_entry_content" style="margin-left:15px; width:98%; padding-top: 8px;">
 					<span class="form-group " style=" width:30%; ">
 						<select class="form-control" id="province1" name="merchant_province1"></select>
@@ -225,6 +226,62 @@ if ($me_state == '1')
                 </div>
 			</li>
             <li class="mui-input-row">
+                <div class="input-group" id="mopen" style="width: 90%; float: left;margin-left:10px; border:0px;">
+                    <div class="mui-btn mui-btn-primary" style="width: 100%; float: left; margin-top:10px;"><a style="color: #FFFFFF;" href="javascript:void();">选择您的位置</a></div>
+                </div>
+                <div style="float: left; width: 100%; margin-left: 10px; display:none;" id="closewindow">
+                    <div class="input-group" style="width: 202px; float: left; margin-right: 10px;">
+                        <span class="input-group-addon">坐标 X</span>
+                        <input class="form-control" type="text" name="commodity_gpsx" id="cgx" value="0" style="width: 142px;">
+                    </div>
+                    <div class="input-group" style="width: 202px; float: left; margin-right: 10px;">
+                        <span class="input-group-addon">坐标 Y</span>
+                        <input class="form-control" type="text" name="commodity_gpsy" id="cgy" value="0" style="width: 142px;">
+                    </div>
+                </div>
+
+                <div style="width: 90%; float: left;margin-left:10px; border:0px;">
+                    <a class="show-hide-address" id="show-item-address">地址 <img src="img/plus-circle.png" alt=""></a>
+                    <a class="show-hide-address" id="hide-item-address" style="display: none;">地址 <img src="img/minus-circle.png" alt=""></a>
+                </div>
+                <script>
+                    $(".show-hide-address").click(function(){
+                        $(".show-hide-address").hide();
+                        if($(this).attr("id") == "show-item-address"){
+                            $("#hide-item-address").show();
+                            $("#address_container").show();
+                        }else{
+                            $("#show-item-address").show();
+                            $("#address_container").hide();
+                        }
+                    })
+                </script>
+                <div id="address_container" style="display: none;">
+                    <div class="area_select" id="distpicker" style="width:90%; margin-left:10px;">
+                        <div class="form-group" style=" width:100%; margin-top:8px;">
+                            <select class="form-control" id="province1" name="commodity_province1"></select>
+                        </div>
+                        <div class="form-group" style=" width:100%; margin-top:-8px;">
+                            <select class="form-control" id="city1" name="commodity_city1"></select>
+                        </div>
+                        <div class="form-group" style=" width:100%; margin-top:-8px;">
+                            <select class="form-control" id="district1" name="commodity_district1"></select>
+                        </div>
+                    </div>
+                </div>
+            </li>
+           
+                <div id="showmap" style="display:none; width:100%; height:100%; position:absolute; z-index:9999;">
+                    <div id="allmap" style="width: 100%;height:1100px;"></div>
+                    <div class="foot" style=" height:80px; bottom: 0;"> 
+                    <span class="mui-tab-item" style="width:100%; float:left;"><input type="text" id="nm" style="width:100%; float:left;"></span>
+                    <div style="width:100%; text-align:center;"><sapn id="gt"><img src="img/ok.gif" style="width:30%;margin-top:-10px;"> </sapn></div>
+                    </div>
+                    </div>                          
+                    <!-- 百度编辑器 -->
+            
+            <li class="mui-input-row">
+
 				<label>专家地址</label>
 			  	<input type="text" name="merchant_address" value="<?php echo $row_merchant['me_address']?>" placeholder="请输入专家地址">
 			</li>
@@ -348,6 +405,17 @@ if ($me_state == '1')
             </li>
 	<div class="member_bank_loading_upfile"><img src="../img/loding.gif" alt="加载中"></div>
 
+
+
+    <script type="text/javascript">
+        function upload_product_details()
+        {
+            $( "#product_details" ).click();
+        }
+    </script>
+    <script type="text/javascript" src="fuyuanquan/diyUpload/js/webuploader.min.js"></script>
+    <script type="text/javascript" src="fuyuanquan/diyUpload/js/diyUpload_.js"></script>
+
 <script type="text/javascript" src="js/jSignature.min.js"></script>
 <script type="text/javascript">
     $(document).ready(function() {
@@ -385,6 +453,8 @@ if ($me_state == '1')
 			 var merchant_district = $(".merchant_entry [name='merchant_district1']").val();
 			 var merchant_logo = $(".merchant_logo img").attr("src");
 			 var merchant_bg = $(".merchant_bg img").attr("src");
+            var commodity_gpsx = $( ".merchant_entry [name='commodity_gpsx']" ).val();
+            var commodity_gpsy = $( ".merchant_entry [name='commodity_gpsy']" ).val();
             if (!merchant_shop) {
                 alert("请填写专家名称");
                 return false;
@@ -452,7 +522,9 @@ if ($me_state == '1')
 				merchant_city:merchant_city,
 				merchant_district:merchant_district,
 				merchant_logo:merchant_logo,
-				merchant_bg:merchant_bg
+				merchant_bg:merchant_bg,
+                com_gpsx:commodity_gpsx,
+                com_gpsy:commodity_gpsy
               },
               function(data,status){
 				  if (data == "2") {
@@ -513,6 +585,60 @@ if ($me_state == '1')
 
 // JavaScript Document
 </script>
+<script>    
+    $("#mopen").click(function(){   
+        document.getElementById('showmap').style.display = "block";
+    });
+    </script>
+    <script type="text/javascript">
+    // 百度地图API功能
+    var map = new BMap.Map("allmap");
+    var point = new BMap.Point(108.95,34.27);
+    map.centerAndZoom(point,16);
+
+    var geolocation = new BMap.Geolocation();
+    geolocation.getCurrentPosition(function(r){
+        // console.log(r.point)
+        if(this.getStatus() == BMAP_STATUS_SUCCESS){
+            var mk = new BMap.Marker(r.point);
+            map.addOverlay(mk);//标出所在地
+            map.panTo(r.point);//地图中心移动
+            //alert('您的位置：'+r.point.lng+','+r.point.lat);
+            var point = new BMap.Point(r.point.lng,r.point.lat);//用所定位的经纬度查找所在地省市街道等信息
+            addres(point);
+            
+        }else {
+            alert('failed'+this.getStatus());
+        }        
+    },{enableHighAccuracy: true})
+    
+    //addEventListener--添加事件监听函数
+    //click--点击事件获取经纬度
+    map.addEventListener("click",function(e){
+        addres(e.point)
+    });
+    
+    function addres(point)
+    {
+        map.clearOverlays();//删除所有标注
+        //prompt("",e.point.lng + "," + e.point.lat);
+        document.getElementById("cgx").value = String(point.lng);
+        document.getElementById("cgy").value = String(point.lat);
+        var marker = new BMap.Marker(point);
+        map.addOverlay(marker);
+        var gc = new BMap.Geocoder();
+        gc.getLocation(point, function(rs)
+        {
+            var addComp = rs.addressComponents; 
+            // console.log(rs.address);//地址信息
+            //alert(rs.address);//弹出所在地址
+            document.getElementById("nm").value = rs.address;
+        });
+    }
+    $("#gt").click(function(){
+        document.getElementById('showmap').style.display = "none";
+    });
+    </script>
 <?php 
 include("include/foot_.php");
 ?>

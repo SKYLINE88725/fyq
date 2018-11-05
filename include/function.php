@@ -14,6 +14,19 @@ function get_user_type( $member , $mysqli ){
 	}
 }
 
+function get_user_type_1( $member , $mysqli ){
+	$query = "SELECT * FROM college_list WHERE cl_phone ='{$member}'";
+
+	if ($result = mysqli_query( $mysqli, $query )) {
+        if ($result->num_rows > 0)
+            return true;
+        else
+            return false;
+	} else {
+		return "sql_error";
+	}
+}
+
 function format_date($time) {
     if($time <= 0) return '刚刚';
 

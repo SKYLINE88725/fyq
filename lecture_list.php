@@ -4,6 +4,14 @@ $sub_id = @$_GET['sub_id'];
 if (!$sub_id) {
 	exit;
 }
+$type = @$_GET['type'];
+if (!$type) {
+	$type = "user";
+}
+if ($type != "teacher" && $type != "user") {
+	$type = "user";
+}
+
 $query = "SELECT * FROM	subject_list LEFT JOIN college_list ON subject_list.sub_teacher_id = college_list.cl_id WHERE subject_list.sub_id = '{$sub_id}'";
 if ($result = mysqli_query($mysqli, $query))
 {
@@ -54,21 +62,22 @@ function follow_id(fid) {
 
 <body>
 <?php 
-	$top_title = $row['sub_title'];
-	$top_url = '<span style="text-align: right; width: auto; margin-right:2%;" onClick="window.location.href=\'my_commodity_add.php?sub_id='.$sub_id.'\'">新讲课发布<span>';
+	$top_title = $row['sub_title'];	
+	if ($type == "teacher")
+		$top_url = '<span style="text-align: right; width: auto; margin-right:2%;" onClick="window.location.href=\'my_commodity_add.php?sub_id='.$sub_id.'\'"><img src="/img/topmenu-add.png" alt="新讲课发布"><span>';
 	$return_url = "..";
 	include("include/top_navigate.php");
 ?>
 
     
-<img src="<?php echo $row['cl_logo'];?>" style="width: 100%;height: 100px;filter: blur(2px);top:48px;position: absolute;">
+<img src="<?php echo $row['cl_logo'];?>" style="width: 100%;height: 120px;filter: blur(2px);top:48px;position: absolute;">
 <div style="position: relative;margin-top: 80px;">
-	<img src="<?php echo $row['sub_picture'];?>" style="width: 100px;box-shadow: 0px 0px 15px 3px rgba(0,0,0,.3);border: solid white 2px;float: left;margin: 18px 20px">
+	<img src="<?php echo $row['sub_picture'];?>" style="width: 100px;height: 100px;box-shadow: 0px 0px 15px 3px rgba(0,0,0,.3);border: solid white 2px;float: left;margin: 18px 20px">
 	<div style="padding-top: 15px;">
 		<p style="padding: 0px;color: white;font-size: 18px; margin: 3px;"><?php echo $row['cl_name'];?></p>
-		<p style="white-space: nowrap;text-overflow: ellipsis;overflow: hidden;padding: 0px;font-size: 15px;color: white;margin: 3px;"><?php echo $row['cl_province'];?> <?php echo $row['cl_city'];?> <?php echo $row['cl_area'];?></p>
+		<p class="mui-ellipsis" style="padding: 0px;font-size: 15px;color: white;margin: 3px;"><?php echo $row['cl_province'];?> <?php echo $row['cl_city'];?> <?php echo $row['cl_area'];?></p>
 	</div>
-	<div style="color: #333">
+	<div style="color: #333;background-color: #efeff4;border-radius: 8px;">
 		<p class="businesses_blog_list_cate" style="margin-bottom: auto;">
             <img src="img/series.png" style="vertical-align: middle;width: 22px;"><span style="margin: 0px 5px"><?php echo $row['sub_lecture_count'];?>集</span>
 			<span style="float: right;padding: 0px 5px;background-color: #ff655e;color: white;border-radius: 3px;margin-right: 10px;margin-top: 6px;line-height: 1.7;"><?php echo $row_cate['ic_name'];?></span>
@@ -77,7 +86,7 @@ function follow_id(fid) {
 	</div>
 </div>
 <div class="clearfix"></div>
-<div style="margin: 10px; padding: 10px;background-color: white;color: #333">
+<div style="margin: 10px 20px; padding: 10px;background-color: #FFFFFF5C;color: #333">
 	<p><?php echo $row['sub_desc'];?></p>
 </div>
 
@@ -105,20 +114,25 @@ function follow_id(fid) {
 				$row_cate = mysqli_fetch_assoc($result_cate);
 			}
 ?>
-		<div class="mui-card" style="margin: 10px; padding: 10px;background-color: white;color: #333" id="commodity_<?php echo $row_list['tl_id'];?>">
+		<div class="mui-card" style="margin: 1px 0px; padding: 0px 20px;background-color: white;color: #333;box-shadow: none;" id="commodity_<?php echo $row_list['tl_id'];?>">
 		    <a class="mui-card-content"  href="detailed_view.php?view=<?php echo $row_list['tl_id'];?>&type=company" target="_self">
-		    	<p class="businesses_blog_list_title mui-h4"><?php echo $row_list['tl_name'];?></p>
-		    	<p class="businesses_blog_list_title mui-h5"><?php echo $row_list['tl_summary'];?></p>
+		    	<p class="businesses_blog_list_title mui-h4 mui-ellipsis"><?php echo $row_list['tl_name'];?></p>
+		    	<p class="businesses_blog_list_title mui-h5 mui-ellipsis"><?php echo $row_list['tl_summary'];?></p>
 		    	<p class="businesses_blog_list_title mui-h5"><img src="img/reciever.png" style="vertical-align: top;width: 24px;"><span style="width: 20%; margin: 2px 5px"><?php echo $row_list['tl_Sales'];?></span><span><img id="follow_<?php echo $row_list['tl_id'];?>" onClick="follow_id('<?php echo $row_list['tl_id'];?>')" src="<?php echo $follow_img;?>" alt="" style="width: 20px;float: right;"></span></p>
 		    </a>
 		    <div class="clearfix"></div>
-		    <div class="mui-pull-right businesses_blog_list_cate">
+<?php
+			if ($type == "teacher") {
+?>		    
+		    <div class="businesses_blog_list_cate" style="position: absolute; top: 5px; right: 5px">
                 <!-- <div class="mui-btn mui-btn-primary"><a style="color: #FFFFFF;" href="my_commodity_alter.php?id=<?php echo $row_list['tl_id'];?>">修改</a></div> -->
                 <div class="mui-btn" onClick="lecture_del('<?php echo $row_list['tl_id'];?>')">删除</div>
             </div>
+<?php
+			}
+?>		    
 		</div>
-
-<?php 
+<?php
 		}
 	}
 ?>
